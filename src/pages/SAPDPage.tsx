@@ -1,64 +1,63 @@
 import NavBar from '@/components/NavBar';
 import OfficerCard from '@/components/OfficerCard';
 import { RANGOS, officersByRango } from '@/data/officers';
-import sapdLogo from '@/assets/sapd-logo.png';
+
+const LOGO_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Seal_of_the_Los_Angeles_Police_Department.png/250px-Seal_of_the_Los_Angeles_Police_Department.png';
 
 const SAPDPage = () => {
   return (
     <div className="min-h-screen">
       <NavBar />
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="bar-pattern w-full h-2 rounded-full mb-6" />
-        <div className="bg-card border border-border rounded-xl p-6 mb-8 animate-fade-in">
-          <div className="flex items-center gap-4 mb-4">
-            <img src={sapdLogo} alt="SAPD" width={80} height={80} className="drop-shadow-xl" />
+        <div className="bg-accent-bar h-[2px] mb-6" />
+        <div className="border border-border p-6 mb-6">
+          <div className="flex items-start gap-5">
+            <img src={LOGO_URL} alt="SAPD" width={70} height={70} className="shrink-0" />
             <div>
-              <h1 className="text-gold font-bold text-2xl tracking-wider">SAPD</h1>
-              <p className="text-police-blue text-sm">Law Enforcement Record & Police Blacklist</p>
-              <p className="text-gold/60 text-xs italic">"To Protect and to Serve"</p>
+              <h1 className="text-gold font-bold text-lg tracking-[0.3em] mb-1">SAPD</h1>
+              <p className="text-muted-foreground text-[10px] tracking-wider uppercase mb-3">
+                Law Enforcement Record & Police Blacklist — "To Protect and to Serve"
+              </p>
+              <p className="text-muted-foreground text-[10px] leading-relaxed">
+                Bienvenido a la Base de Datos Oficial de Jerarquía del Departamento de Policía de San Andreas (SAPD). 
+                En esta sección se encuentra centralizada y vinculada toda la información correspondiente al personal policial 
+                que ha prestado o presta servicio en cualquiera de las dependencias del Estado. Aquí se alojan los expedientes 
+                completos de oficiales activos, inactivos, retirados y en comisión de servicios especiales, junto con sus 
+                respectivas trayectorias, rangos alcanzados, méritos operativos, asignaciones notables y datos de contacto autorizados.
+              </p>
+              <p className="text-muted-foreground text-[10px] leading-relaxed mt-2">
+                Cada ficha ha sido cuidadosamente elaborada y mantenida por el Departamento de Recursos Humanos en conjunto con la 
+                División Administrativa. El uso indebido de esta información será pasible de sanciones administrativas y/o penales.
+              </p>
+              <p className="text-muted-foreground text-[10px] leading-relaxed mt-2 italic">
+                Nota: Solo estarán en el apartado de ExPersonal oficiales quienes al presentar su renuncia solicitaran con anterioridad 
+                quedar registrados en dicho apartado. Esta base se actualiza de forma periódica.
+              </p>
             </div>
           </div>
-          <p className="text-muted-foreground text-xs leading-relaxed">
-            Bienvenido a la Base de Datos Oficial de Jerarquía del Departamento de Policía de San Andreas (SAPD). 
-            En esta sección se encuentra centralizada y vinculada toda la información correspondiente al personal policial 
-            que ha prestado o presta servicio en cualquiera de las dependencias del Estado. Aquí se alojan los expedientes 
-            completos de oficiales activos, inactivos, retirados y en comisión de servicios especiales, junto con sus 
-            respectivas trayectorias, rangos alcanzados, méritos operativos, asignaciones notables y datos de contacto autorizados.
-          </p>
-          <p className="text-muted-foreground text-xs leading-relaxed mt-2">
-            Cada ficha ha sido cuidadosamente elaborada y mantenida por el Departamento de Recursos Humanos en conjunto con la 
-            División Administrativa, con el objetivo de garantizar transparencia, trazabilidad y acceso controlado a la información 
-            institucional. El uso indebido de esta información será pasible de sanciones administrativas y/o penales según corresponda.
-          </p>
-          <p className="text-muted-foreground text-xs leading-relaxed mt-2 italic">
-            Nota: Solo estarán en el apartado de ExPersonal oficiales quienes al presentar su renuncia solicitaran con anterioridad 
-            quedar registrados en dicho apartado, asimismo, personal vetado del departamento. Esta base se actualiza de forma periódica.
-          </p>
         </div>
-        <div className="bar-pattern w-full h-2 rounded-full mb-8" />
+        <div className="bg-accent-bar h-[2px] mb-8" />
 
         {/* Officers by Rank */}
         {RANGOS.map((rango) => {
           const officers = officersByRango[rango.key];
           return (
-            <div key={rango.key} className="mb-8">
-              <div className={`bg-gradient-to-r ${rango.color} rounded-t-lg px-4 py-2`}>
-                <h2 className="text-sm font-bold tracking-widest uppercase" style={{ color: 'hsl(0 0% 100%)' }}>
+            <div key={rango.key} className="mb-6">
+              <div className="bg-header px-4 py-2 border-l-4 border-gold">
+                <h2 className="text-[11px] font-bold tracking-[0.3em] text-gold uppercase">
                   ★ {rango.label}
                 </h2>
               </div>
-              <div className="border border-t-0 border-border rounded-b-lg p-4 bg-card/50">
+              <div className="border border-t-0 border-border px-4">
                 {officers.length === 0 ? (
-                  <p className="text-muted-foreground text-sm text-center italic py-4">
+                  <p className="text-muted-foreground text-[10px] text-center py-6 tracking-wider uppercase">
                     Sin personal asignado actualmente
                   </p>
                 ) : (
-                  <div className="grid gap-4">
-                    {officers.map((officer) => (
-                      <OfficerCard key={officer.id} officer={officer} />
-                    ))}
-                  </div>
+                  officers.map((officer) => (
+                    <OfficerCard key={officer.id} officer={officer} />
+                  ))
                 )}
               </div>
             </div>

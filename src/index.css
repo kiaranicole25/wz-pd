@@ -4,55 +4,44 @@
 
 @layer base {
   :root {
-    --background: 220 25% 8%;
-    --foreground: 210 20% 90%;
+    --background: 220 30% 6%;
+    --foreground: 45 90% 60%;
 
-    --card: 220 22% 12%;
-    --card-foreground: 210 20% 90%;
+    --card: 220 28% 10%;
+    --card-foreground: 45 90% 60%;
 
-    --popover: 220 22% 14%;
-    --popover-foreground: 210 20% 90%;
+    --popover: 220 28% 12%;
+    --popover-foreground: 45 90% 60%;
 
-    --primary: 45 80% 55%;
-    --primary-foreground: 220 25% 8%;
+    --primary: 45 90% 55%;
+    --primary-foreground: 220 30% 6%;
 
-    --secondary: 215 60% 35%;
-    --secondary-foreground: 210 20% 95%;
+    --secondary: 215 60% 30%;
+    --secondary-foreground: 45 90% 60%;
 
-    --muted: 220 18% 16%;
-    --muted-foreground: 215 15% 55%;
+    --muted: 220 20% 14%;
+    --muted-foreground: 45 30% 50%;
 
-    --accent: 215 70% 45%;
-    --accent-foreground: 210 20% 95%;
+    --accent: 215 70% 40%;
+    --accent-foreground: 45 90% 60%;
 
     --destructive: 0 70% 50%;
-    --destructive-foreground: 210 20% 95%;
+    --destructive-foreground: 0 0% 100%;
 
-    --success: 140 60% 40%;
-    --success-foreground: 210 20% 95%;
+    --border: 220 20% 18%;
+    --input: 220 20% 16%;
+    --ring: 45 90% 55%;
 
-    --border: 220 15% 20%;
-    --input: 220 15% 18%;
-    --ring: 45 80% 55%;
+    --radius: 0.25rem;
 
-    --radius: 0.5rem;
-
-    --gold: 45 80% 55%;
-    --gold-dark: 40 70% 40%;
-    --police-blue: 215 60% 35%;
-    --police-blue-light: 215 50% 50%;
-    --police-navy: 220 30% 15%;
-    --veto-red: 0 65% 45%;
-    --veto-red-light: 0 60% 55%;
-
-    --sidebar-background: 220 25% 10%;
-    --sidebar-foreground: 210 20% 90%;
-    --sidebar-primary: 45 80% 55%;
-    --sidebar-primary-foreground: 220 25% 8%;
-    --sidebar-accent: 215 60% 35%;
-    --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 220 15% 20%;
-    --sidebar-ring: 45 80% 55%;
+    --sidebar-background: 220 28% 8%;
+    --sidebar-foreground: 45 90% 60%;
+    --sidebar-primary: 45 90% 55%;
+    --sidebar-primary-foreground: 220 30% 6%;
+    --sidebar-accent: 215 60% 30%;
+    --sidebar-accent-foreground: 45 90% 60%;
+    --sidebar-border: 220 20% 18%;
+    --sidebar-ring: 45 90% 55%;
   }
 }
 
@@ -62,39 +51,39 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Courier New', 'Consolas', monospace;
   }
 }
 
 @layer utilities {
-  .gold-gradient {
-    background: linear-gradient(135deg, hsl(45 80% 55%), hsl(40 70% 40%));
-  }
-  .police-gradient {
-    background: linear-gradient(135deg, hsl(215 60% 35%), hsl(220 30% 15%));
-  }
-  .veto-gradient {
-    background: linear-gradient(135deg, hsl(0 65% 45%), hsl(215 60% 35%));
-  }
-  .bar-pattern {
-    background: repeating-linear-gradient(
-      0deg,
-      hsl(45 80% 55% / 0.8) 0px,
-      hsl(45 80% 55% / 0.8) 3px,
-      transparent 3px,
-      transparent 6px
-    );
-  }
   .text-gold {
-    color: hsl(45 80% 55%);
+    color: hsl(45 90% 55%);
   }
-  .text-police-blue {
-    color: hsl(215 50% 50%);
+  .text-gold-dim {
+    color: hsl(45 40% 45%);
+  }
+  .bg-row-even {
+    background-color: hsl(220 28% 10%);
+  }
+  .bg-row-odd {
+    background-color: hsl(220 25% 8%);
   }
   .border-gold {
-    border-color: hsl(45 80% 55%);
+    border-color: hsl(45 90% 55%);
   }
-  .bg-police-navy {
-    background-color: hsl(220 30% 15%);
+  .bg-header {
+    background-color: hsl(215 60% 30%);
+  }
+  .bg-accent-bar {
+    background-color: hsl(45 90% 55%);
+  }
+  .text-label {
+    color: hsl(45 90% 60%);
+  }
+  .text-value {
+    color: hsl(0 0% 85%);
+  }
+  .veto-header {
+    background-color: hsl(0 50% 25%);
   }
 }

@@ -1,8 +1,5 @@
 import { useState } from 'react';
 import NavBar from '@/components/NavBar';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
 
 interface Noticia {
   id: string;
@@ -28,14 +25,6 @@ const NoticiasPage = () => {
   const saveNoticias = (list: Noticia[]) => {
     setNoticias(list);
     localStorage.setItem('sapd-noticias', JSON.stringify(list));
-  };
-
-  const handleAddClick = () => {
-    if (authenticated) {
-      setShowForm(true);
-    } else {
-      setShowForm(true);
-    }
   };
 
   const handlePassSubmit = (e: React.FormEvent) => {
@@ -70,87 +59,77 @@ const NoticiasPage = () => {
   return (
     <div className="min-h-screen">
       <NavBar />
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="bar-pattern w-full h-2 rounded-full mb-6" />
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="bg-accent-bar h-[2px] mb-6" />
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-gold text-2xl font-bold tracking-wider">📰 Noticias SAPD</h1>
-          <Button onClick={handleAddClick} className="gold-gradient text-primary-foreground font-bold text-sm">
+          <h1 className="text-gold text-sm font-bold tracking-[0.3em] uppercase">Noticias SAPD</h1>
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-primary text-primary-foreground text-[10px] font-bold tracking-widest uppercase px-4 py-2 hover:opacity-90 transition-opacity"
+          >
             + Añadir Noticia
-          </Button>
+          </button>
         </div>
 
         {showForm && !authenticated && (
-          <form onSubmit={handlePassSubmit} className="bg-card border border-border rounded-xl p-6 mb-6 animate-fade-in">
-            <h3 className="text-gold font-bold mb-4 text-center">🔒 Ingrese la Contraseña Administración RR-PP</h3>
-            <Input
+          <form onSubmit={handlePassSubmit} className="border-2 border-gold p-5 mb-6 max-w-sm mx-auto">
+            <h3 className="text-gold font-bold text-[10px] tracking-[0.15em] uppercase mb-4 text-center">
+              Ingrese la Contraseña Administración RR-PP
+            </h3>
+            <input
               type="password"
               placeholder="Contraseña"
               value={passInput}
               onChange={(e) => setPassInput(e.target.value)}
-              className="bg-muted border-border mb-3"
+              className="w-full bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono mb-3"
             />
-            {passError && <p className="text-destructive text-sm text-center mb-3">❌ {passError}</p>}
-            <Button type="submit" className="w-full gold-gradient text-primary-foreground font-bold">Ingresar</Button>
+            {passError && <p className="text-destructive text-[10px] text-center mb-3 tracking-wider uppercase">✕ {passError}</p>}
+            <button type="submit" className="w-full bg-primary text-primary-foreground text-xs font-bold tracking-widest uppercase py-2 hover:opacity-90">Ingresar</button>
           </form>
         )}
 
         {showForm && authenticated && (
-          <form onSubmit={addNoticia} className="bg-card border border-border rounded-xl p-6 mb-6 animate-fade-in">
-            <h3 className="text-gold font-bold mb-4">Crear Noticia</h3>
+          <form onSubmit={addNoticia} className="border border-border p-5 mb-6">
+            <h3 className="text-gold font-bold text-[10px] tracking-[0.2em] uppercase mb-4">Crear Noticia</h3>
             <div className="grid gap-3">
-              <Input
-                placeholder="Título"
-                value={form.titulo}
-                onChange={(e) => setForm({ ...form, titulo: e.target.value })}
-                className="bg-muted border-border"
-              />
-              <Textarea
-                placeholder="Desarrollo"
-                value={form.desarrollo}
-                onChange={(e) => setForm({ ...form, desarrollo: e.target.value })}
-                className="bg-muted border-border min-h-[120px]"
-              />
-              <Input
-                placeholder="URL de imagen (opcional)"
-                value={form.imagen}
-                onChange={(e) => setForm({ ...form, imagen: e.target.value })}
-                className="bg-muted border-border"
-              />
+              <input placeholder="Título" value={form.titulo} onChange={(e) => setForm({ ...form, titulo: e.target.value })} className="bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono" />
+              <textarea placeholder="Desarrollo" value={form.desarrollo} onChange={(e) => setForm({ ...form, desarrollo: e.target.value })} className="bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono min-h-[100px] resize-y" />
+              <input placeholder="URL de imagen (opcional)" value={form.imagen} onChange={(e) => setForm({ ...form, imagen: e.target.value })} className="bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono" />
               <div className="flex gap-2">
-                <Button type="submit" className="flex-1 gold-gradient text-primary-foreground font-bold">Publicar</Button>
-                <Button type="button" variant="outline" onClick={() => setShowForm(false)}>Cancelar</Button>
+                <button type="submit" className="flex-1 bg-primary text-primary-foreground text-xs font-bold tracking-widest uppercase py-2 hover:opacity-90">Publicar</button>
+                <button type="button" onClick={() => setShowForm(false)} className="border border-border text-muted-foreground text-xs px-4 py-2 hover:text-foreground transition-colors">Cancelar</button>
               </div>
             </div>
           </form>
         )}
 
         {noticias.length === 0 ? (
-          <div className="bg-card border border-border rounded-xl p-8 text-center">
-            <p className="text-muted-foreground italic">No hay noticias publicadas aún.</p>
+          <div className="border border-border p-8 text-center">
+            <p className="text-muted-foreground text-[10px] tracking-wider uppercase">No hay noticias publicadas aún.</p>
           </div>
         ) : (
-          <div className="grid gap-6">
+          <div className="grid gap-4">
             {noticias.map((n) => (
-              <article key={n.id} className="bg-card border border-border rounded-xl overflow-hidden animate-fade-in relative group">
+              <article key={n.id} className="border border-border relative group">
                 <button
                   onClick={() => removeNoticia(n.id)}
-                  className="absolute top-3 right-3 z-10 bg-destructive/80 text-destructive-foreground rounded-full w-7 h-7 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-2 right-2 z-10 text-destructive text-[10px] tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity border border-destructive px-2 py-0.5"
                 >
-                  ✕
+                  ✕ Borrar
                 </button>
                 {n.imagen && (
-                  <img src={n.imagen} alt={n.titulo} loading="lazy" className="w-full h-48 object-cover" />
+                  <img src={n.imagen} alt={n.titulo} loading="lazy" className="w-full h-44 object-cover border-b border-border" />
                 )}
                 <div className="p-5">
-                  <p className="text-xs text-muted-foreground mb-1">{n.fecha}</p>
-                  <h2 className="text-gold font-bold text-xl mb-2">{n.titulo}</h2>
-                  <p className="text-foreground text-sm leading-relaxed whitespace-pre-wrap">{n.desarrollo}</p>
+                  <p className="text-[9px] text-muted-foreground tracking-wider uppercase mb-1">{n.fecha}</p>
+                  <h2 className="text-gold font-bold text-sm tracking-wider mb-2">{n.titulo}</h2>
+                  <p className="text-value text-[11px] leading-relaxed whitespace-pre-wrap">{n.desarrollo}</p>
                 </div>
               </article>
             ))}
           </div>
         )}
-        <div className="bar-pattern w-full h-2 rounded-full mt-8" />
+        <div className="bg-accent-bar h-[2px] mt-8" />
       </div>
     </div>
   );

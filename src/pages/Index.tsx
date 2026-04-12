@@ -1,43 +1,41 @@
 import { Link } from 'react-router-dom';
-import sapdLogo from '@/assets/sapd-logo.png';
+
+const LOGO_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Seal_of_the_Los_Angeles_Police_Department.png/250px-Seal_of_the_Los_Angeles_Police_Department.png';
 
 const tabs = [
-  { path: '/sapd', label: 'SAPD', desc: 'Jerarquía del Departamento', icon: '🛡️' },
-  { path: '/vetados', label: 'VETOS', desc: 'Personal Vetado', icon: '🚫' },
-  { path: '/noticias', label: 'Noticias', desc: 'Noticias del Departamento', icon: '📰' },
-  { path: '/importante', label: 'Importante', desc: 'Avisos Oficiales', icon: '⚠️' },
+  { path: '/sapd', label: 'SAPD', desc: 'Jerarquía del Departamento' },
+  { path: '/vetados', label: 'VETOS', desc: 'Personal Vetado' },
+  { path: '/noticias', label: 'Noticias', desc: 'Noticias del Departamento' },
+  { path: '/importante', label: 'Importante', desc: 'Avisos Oficiales' },
 ];
 
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
-      <div className="bar-pattern w-full h-2 mb-8 rounded-full" />
-      <img src={sapdLogo} alt="SAPD Logo" width={140} height={140} className="mb-6 drop-shadow-2xl" />
-      <h1 className="text-gold text-3xl md:text-4xl font-bold tracking-widest text-center mb-2">
-        SAPD
-      </h1>
-      <p className="text-muted-foreground text-center mb-1 text-sm">
+      <div className="bg-accent-bar w-full max-w-2xl h-[2px] mb-10" />
+      <img src={LOGO_URL} alt="SAPD" width={120} height={120} className="mb-6" />
+      <h1 className="text-gold text-2xl font-bold tracking-[0.4em] text-center mb-1">SAPD</h1>
+      <p className="text-muted-foreground text-[10px] tracking-[0.3em] uppercase mb-1">
         Law Enforcement Record & Police Blacklist
       </p>
-      <p className="text-gold/70 text-center mb-8 italic text-xs tracking-wider">
+      <p className="text-gold-dim text-[10px] italic tracking-wider mb-10">
         "To Protect and to Serve"
       </p>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-2xl mb-10">
         {tabs.map((tab) => (
           <Link
             key={tab.path}
             to={tab.path}
-            className="bg-card border border-border rounded-xl p-6 text-center hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 group"
+            className="border border-border hover:border-gold py-6 px-4 text-center transition-colors group"
           >
-            <div className="text-3xl mb-2">{tab.icon}</div>
-            <div className="text-gold font-bold text-lg group-hover:scale-105 transition-transform">
+            <div className="text-gold font-bold text-sm tracking-[0.2em] group-hover:tracking-[0.3em] transition-all">
               [{tab.label}]
             </div>
-            <div className="text-muted-foreground text-xs mt-1">{tab.desc}</div>
+            <div className="text-muted-foreground text-[9px] tracking-wider uppercase mt-2">{tab.desc}</div>
           </Link>
         ))}
       </div>
-      <div className="bar-pattern w-full h-2 rounded-full" />
+      <div className="bg-accent-bar w-full max-w-2xl h-[2px]" />
     </div>
   );
 };

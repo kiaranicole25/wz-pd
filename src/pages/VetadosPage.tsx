@@ -1,15 +1,7 @@
 import { useState } from 'react';
 import NavBar from '@/components/NavBar';
 import PasswordGate from '@/components/PasswordGate';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-
-interface Vetado {
-  id: string;
-  nombre: string;
-  discordId: string;
-  motivo: string;
-}
+import { defaultVetados, type Vetado } from '@/data/officers';
 
 const CREDENTIALS = [
   { user: 'Mike_Holloway', pass: 'mike0000' },
@@ -19,7 +11,12 @@ const CREDENTIALS = [
 const VetadosPage = () => {
   const [vetados, setVetados] = useState<Vetado[]>(() => {
     const saved = localStorage.getItem('sapd-vetados');
-    return saved ? JSON.parse(saved) : [];
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed.length > 0) return parsed;
+    }
+    localStorage.setItem('sapd-vetados', JSON.stringify(defaultVetados));
+    return defaultVetados;
   });
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ nombre: '', discordId: '', motivo: '' });
@@ -54,74 +51,67 @@ const VetadosPage = () => {
   return (
     <div className="min-h-screen">
       <NavBar />
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="max-w-4xl mx-auto px-4 py-8">
         <PasswordGate
-          title="Administración SAPD - Ingrese sus credenciales"
+          title="Administración SAPD — Ingrese sus credenciales"
           showUsername
           onAuth={handleAuth}
         >
-          {/* Vetados Content */}
-          <div className="veto-gradient h-2 rounded-full mb-6" />
+          <div className="bg-accent-bar h-[2px] mb-6" />
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold tracking-wider" style={{ color: 'hsl(0 65% 50%)' }}>
-              🚫 Personal Vetado — SAPD
+            <h1 className="text-gold text-sm font-bold tracking-[0.3em] uppercase">
+              Personal Vetado — SAPD
             </h1>
-            <Button onClick={() => setShowForm(!showForm)} className="gold-gradient text-primary-foreground font-bold text-sm">
+            <button
+              onClick={() => setShowForm(!showForm)}
+              className="bg-primary text-primary-foreground text-[10px] font-bold tracking-widest uppercase px-4 py-2 hover:opacity-90 transition-opacity"
+            >
               {showForm ? 'Cancelar' : '+ Agregar Vetado'}
-            </Button>
+            </button>
           </div>
 
           {showForm && (
-            <form onSubmit={addVetado} className="bg-card border border-border rounded-xl p-6 mb-6 animate-fade-in">
-              <h3 className="text-gold font-bold mb-4">Agregar Vetado</h3>
+            <form onSubmit={addVetado} className="border border-border p-5 mb-6">
+              <h3 className="text-gold font-bold text-[10px] tracking-[0.2em] uppercase mb-4">Agregar Vetado</h3>
               <div className="grid gap-3">
-                <Input
-                  placeholder="Nombre_Apellido"
-                  value={form.nombre}
-                  onChange={(e) => setForm({ ...form, nombre: e.target.value })}
-                  className="bg-muted border-border"
-                />
-                <Input
-                  placeholder="Discord ID"
-                  value={form.discordId}
-                  onChange={(e) => setForm({ ...form, discordId: e.target.value })}
-                  className="bg-muted border-border"
-                />
-                <Input
-                  placeholder="Motivo"
-                  value={form.motivo}
-                  onChange={(e) => setForm({ ...form, motivo: e.target.value })}
-                  className="bg-muted border-border"
-                />
-                <Button type="submit" className="gold-gradient text-primary-foreground font-bold">
-                  Confirmar
-                </Button>
+                <input placeholder="Nombre_Apellido" value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })} className="bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono" />
+                <input placeholder="Discord ID" value={form.discordId} onChange={(e) => setForm({ ...form, discordId: e.target.value })} className="bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono" />
+                <input placeholder="Motivo" value={form.motivo} onChange={(e) => setForm({ ...form, motivo: e.target.value })} className="bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono" />
+                <button type="submit" className="bg-primary text-primary-foreground text-xs font-bold tracking-widest uppercase py-2 hover:opacity-90">Confirmar</button>
               </div>
             </form>
           )}
 
-          {vetados.length === 0 ? (
-            <div className="bg-card border border-border rounded-xl p-8 text-center">
-              <p className="text-muted-foreground italic">No hay personal vetado registrado actualmente.</p>
+          {/* Table header */}
+          <div className="veto-header grid grid-cols-[1fr_1fr_2fr] px-4 py-2 border-l-4 border-gold">
+            <span className="text-gold text-[10px] font-bold tracking-widest uppercase">Nombre DP</span>
+            <span className="text-gold text-[10px] font-bold tracking-widest uppercase">Discord ID</span>
+            <span className="text-gold text-[10px] font-bold tracking-widest uppercase">Motivo</span>
+          </div>
+
+          {vetados.map((v, i) => (
+            <div
+              key={v.id}
+              className={`grid grid-cols-[1fr_1fr_2fr] px-4 py-2.5 border-b border-border group relative ${i % 2 === 0 ? 'bg-row-even' : 'bg-row-odd'}`}
+            >
+              <span className="text-value text-[11px]">{v.nombre}</span>
+              <span className="text-value text-[11px] font-mono">{v.discordId}</span>
+              <span className="text-value text-[11px] pr-6">{v.motivo}</span>
+              <button
+                onClick={() => removeVetado(v.id)}
+                className="absolute top-1 right-2 text-destructive text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                ✕
+              </button>
             </div>
-          ) : (
-            <div className="grid gap-3">
-              {vetados.map((v) => (
-                <div key={v.id} className="bg-card border border-border rounded-lg p-4 animate-fade-in relative group">
-                  <button
-                    onClick={() => removeVetado(v.id)}
-                    className="absolute top-2 right-2 text-destructive opacity-0 group-hover:opacity-100 transition-opacity text-sm hover:underline"
-                  >
-                    ✕ Eliminar
-                  </button>
-                  <p><span className="font-semibold" style={{ color: 'hsl(0 65% 50%)' }}>Número EXP (Discord ID):</span> <span className="text-foreground">{v.discordId}</span></p>
-                  <p><span className="font-semibold" style={{ color: 'hsl(0 65% 50%)' }}>Nombre DP:</span> <span className="text-foreground">{v.nombre}</span></p>
-                  <p><span className="font-semibold" style={{ color: 'hsl(0 65% 50%)' }}>Motivo:</span> <span className="text-foreground">{v.motivo}</span></p>
-                </div>
-              ))}
+          ))}
+
+          {vetados.length === 0 && (
+            <div className="border border-border p-8 text-center">
+              <p className="text-muted-foreground text-[10px] tracking-wider uppercase">No hay personal vetado registrado.</p>
             </div>
           )}
-          <div className="veto-gradient h-2 rounded-full mt-6" />
+          <div className="bg-accent-bar h-[2px] mt-6" />
         </PasswordGate>
       </div>
     </div>
