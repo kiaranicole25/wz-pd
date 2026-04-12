@@ -37,8 +37,8 @@ const o = (nombre: string, rango: string): Officer => ({
 
 export const officersByRango: Record<RangoKey, Officer[]> = {
   comisarios: [
-    { ...o('Mike_Holloway', 'Comisario'), cargo: 'Encargado Facción' },
-    { ...o('Kendo_Lockser', 'Comisario'), cargo: 'Encargado Facción' },
+    { ...o('Mike_Holloway', 'Comisario'), cargo: 'Encargado Facción', placa: '#2526', division: 'D.I', imagen: '' },
+    { ...o('Kendo_Lockser', 'Comisario'), cargo: 'Encargado Facción', placa: '#2705', division: 'SWAT', imagen: '' },
   ],
   inspectores: [
     o('Dashy_Woods', 'Inspector'),
