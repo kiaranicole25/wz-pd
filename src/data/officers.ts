@@ -23,36 +23,77 @@ export const RANGOS: { key: RangoKey; label: string }[] = [
   { key: 'cadetes', label: 'CADETES' },
 ];
 
+let _id = 0;
+const o = (nombre: string, rango: string): Officer => ({
+  id: String(++_id),
+  nombre,
+  rango,
+  cargo: '',
+  division: '',
+  placa: '',
+  expediente: `EXP-${String(_id).padStart(4, '0')}`,
+  notas: 'Vacío por ahora',
+});
+
 export const officersByRango: Record<RangoKey, Officer[]> = {
   comisarios: [
-    {
-      id: '1',
-      nombre: 'Mike Holloway',
-      rango: 'Comisario',
-      cargo: 'Cúpula Administrativa',
-      division: 'Encargado General',
-      placa: '#0001',
-      expediente: 'EXP-0001',
-      notas: 'Vacío por ahora',
-    },
-    {
-      id: '2',
-      nombre: 'Kendo Lockser',
-      rango: 'Comisario',
-      cargo: 'Cúpula Administrativa',
-      division: 'D.I',
-      placa: '#0002',
-      expediente: 'EXP-0002',
-      notas: 'Vacío por ahora',
-    },
+    o('Abdul', 'Comisario'),
+    o('Kendo_Lockser', 'Comisario'),
+    o('Ele_Saint', 'Comisario'),
+    o('airi_hushpuppy', 'Comisario'),
+    o('Mike_Holloway', 'Comisario'),
+    o('Saint_Ele', 'Comisario'),
+    o('Lukas_Rivera', 'Comisario'),
   ],
-  inspectores: [],
-  capitanes: [],
-  tenientes: [],
-  sargentos: [],
-  cabos: [],
-  oficiales: [],
-  cadetes: [],
+  inspectores: [
+    o('Dashy_Woods', 'Inspector'),
+    o('Izhan_Grunewaldt', 'Inspector'),
+    o('Kenny_Parker', 'Inspector'),
+  ],
+  capitanes: [
+    o('Andrew_Quintero', 'Capitán'),
+    o('Carpe_Diem', 'Capitán'),
+  ],
+  tenientes: [
+    o('Thiago_Schneider', 'Teniente'),
+    o('Aslan_Mog', 'Teniente'),
+    o('Alan_Cronck', 'Teniente'),
+  ],
+  sargentos: [
+    o('Jhon_Conor', 'Sargento'),
+    o('Harvey_Shikpa', 'Sargento'),
+    o('Antwane_Legends', 'Sargento'),
+    o('Francisco_Duff', 'Sargento'),
+  ],
+  cabos: [
+    o('James_Wallthert', 'Cabo'),
+    o('James_Bricceno', 'Cabo'),
+    o('Gino_Lesner', 'Cabo'),
+    o('Dana_Lopez', 'Cabo'),
+    o('Mike_Taylor', 'Cabo'),
+    o('Karina_Beckenbauer', 'Cabo'),
+    o('Tiven_Gomez', 'Cabo'),
+    o('Night_Lesner', 'Cabo'),
+    o('David_Lazo', 'Cabo'),
+    o('Maxi_Gomez', 'Cabo'),
+    o('Eddie_Morgan', 'Cabo'),
+  ],
+  oficiales: [
+    o('Chinny_Lesner', 'Oficial'),
+    o('Kryzhh_Lesner', 'Oficial'),
+    o('Kseniya_Kvaratkhelia', 'Oficial'),
+    o('Tryan_Cordozar', 'Oficial'),
+  ],
+  cadetes: [
+    o('lucciano_ferroni', 'Cadete'),
+    o('Kenz_Kuznetsov', 'Cadete'),
+    o('Zed_Ghostly', 'Cadete'),
+    o('Jhoe_Fernandez', 'Cadete'),
+    o('Shadow_Black', 'Cadete'),
+    o('Grodell_Whinstronck', 'Cadete'),
+    o('Dylan_Moreno', 'Cadete'),
+    o('Lorenzo_Chevallier', 'Cadete'),
+  ],
 };
 
 export interface Vetado {
