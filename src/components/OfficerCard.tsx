@@ -27,7 +27,7 @@ const OfficerCard = ({ officer }: { officer: Officer }) => {
         </span>
       </div>
 
-      <div className="flex flex-col justify-center gap-1 text-sm min-w-0">
+      <div className="flex flex-col justify-center gap-1 text-sm min-w-0 w-full">
         <Row label="NOMBRE" value={officer.nombre} />
         <Row label="RANGO" value={officer.rango} />
         <Row label="CARGO" value={officer.cargo} />
@@ -46,14 +46,17 @@ const OfficerCard = ({ officer }: { officer: Officer }) => {
 };
 
 const Row = ({ label, value }: { label: string; value: string }) => (
-  <p>
-    <span className="text-label font-bold tracking-wider">{label}</span>
+  <p className="flex w-full">
+    <span className="text-label font-bold tracking-wider whitespace-nowrap">
+      {label}
+    </span>
+
     <span className="text-muted-foreground mx-2">—</span>
 
     <span
       className={
         label === "NOMBRE"
-          ? "bg-yellow-400 text-black px-2 py-0.5 rounded"
+          ? "bg-yellow-500/80 text-black px-2 py-0.5 w-full"
           : "text-value"
       }
     >
