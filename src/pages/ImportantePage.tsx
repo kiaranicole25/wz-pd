@@ -1,8 +1,5 @@
 import { useState } from 'react';
 import NavBar from '@/components/NavBar';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
 
 interface Aviso {
   id: string;
@@ -15,7 +12,7 @@ const AVISO_PASSWORD = 'avisossapd2026mikekendo';
 
 const defaultAviso: Aviso = {
   id: 'default-1',
-  titulo: '🆕 Nueva Plataforma Web del Departamento SAPD',
+  titulo: 'Nueva Plataforma Web del Departamento SAPD',
   contenido: 'Se informa a todo el personal del Departamento de Policía de San Andreas que a partir de la fecha se ha implementado una nueva plataforma web oficial para la gestión y consulta de información institucional. Esta herramienta centraliza la jerarquía del departamento, el registro de personal vetado, noticias internas y avisos importantes. Se solicita a todos los miembros familiarizarse con el sistema y reportar cualquier inconveniente a la División Administrativa.',
   fecha: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' }),
 };
@@ -34,10 +31,6 @@ const ImportantePage = () => {
   const saveAvisos = (list: Aviso[]) => {
     setAvisos(list);
     localStorage.setItem('sapd-avisos', JSON.stringify(list));
-  };
-
-  const handleAddClick = () => {
-    setShowForm(true);
   };
 
   const handlePassSubmit = (e: React.FormEvent) => {
@@ -71,70 +64,65 @@ const ImportantePage = () => {
   return (
     <div className="min-h-screen">
       <NavBar />
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="bar-pattern w-full h-2 rounded-full mb-6" />
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="bg-accent-bar h-[2px] mb-6" />
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-gold text-2xl font-bold tracking-wider">⚠️ Avisos Importantes — SAPD</h1>
-          <Button onClick={handleAddClick} className="gold-gradient text-primary-foreground font-bold text-sm">
+          <h1 className="text-gold text-sm font-bold tracking-[0.3em] uppercase">Avisos Importantes — SAPD</h1>
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-primary text-primary-foreground text-[10px] font-bold tracking-widest uppercase px-4 py-2 hover:opacity-90 transition-opacity"
+          >
             + Crear Aviso
-          </Button>
+          </button>
         </div>
 
         {showForm && !authenticated && (
-          <form onSubmit={handlePassSubmit} className="bg-card border border-border rounded-xl p-6 mb-6 animate-fade-in">
-            <h3 className="text-gold font-bold mb-4 text-center">🔒 Ingrese la Contraseña para Crear Avisos</h3>
-            <Input
+          <form onSubmit={handlePassSubmit} className="border-2 border-gold p-5 mb-6 max-w-sm mx-auto">
+            <h3 className="text-gold font-bold text-[10px] tracking-[0.15em] uppercase mb-4 text-center">
+              Ingrese la Contraseña para Crear Avisos
+            </h3>
+            <input
               type="password"
               placeholder="Contraseña"
               value={passInput}
               onChange={(e) => setPassInput(e.target.value)}
-              className="bg-muted border-border mb-3"
+              className="w-full bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono mb-3"
             />
-            {passError && <p className="text-destructive text-sm text-center mb-3">❌ {passError}</p>}
-            <Button type="submit" className="w-full gold-gradient text-primary-foreground font-bold">Ingresar</Button>
+            {passError && <p className="text-destructive text-[10px] text-center mb-3 tracking-wider uppercase">✕ {passError}</p>}
+            <button type="submit" className="w-full bg-primary text-primary-foreground text-xs font-bold tracking-widest uppercase py-2 hover:opacity-90">Ingresar</button>
           </form>
         )}
 
         {showForm && authenticated && (
-          <form onSubmit={addAviso} className="bg-card border border-border rounded-xl p-6 mb-6 animate-fade-in">
-            <h3 className="text-gold font-bold mb-4">Crear Aviso</h3>
+          <form onSubmit={addAviso} className="border border-border p-5 mb-6">
+            <h3 className="text-gold font-bold text-[10px] tracking-[0.2em] uppercase mb-4">Crear Aviso</h3>
             <div className="grid gap-3">
-              <Input
-                placeholder="Título del aviso"
-                value={form.titulo}
-                onChange={(e) => setForm({ ...form, titulo: e.target.value })}
-                className="bg-muted border-border"
-              />
-              <Textarea
-                placeholder="Contenido del aviso"
-                value={form.contenido}
-                onChange={(e) => setForm({ ...form, contenido: e.target.value })}
-                className="bg-muted border-border min-h-[120px]"
-              />
+              <input placeholder="Título del aviso" value={form.titulo} onChange={(e) => setForm({ ...form, titulo: e.target.value })} className="bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono" />
+              <textarea placeholder="Contenido del aviso" value={form.contenido} onChange={(e) => setForm({ ...form, contenido: e.target.value })} className="bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono min-h-[100px] resize-y" />
               <div className="flex gap-2">
-                <Button type="submit" className="flex-1 gold-gradient text-primary-foreground font-bold">Publicar</Button>
-                <Button type="button" variant="outline" onClick={() => setShowForm(false)}>Cancelar</Button>
+                <button type="submit" className="flex-1 bg-primary text-primary-foreground text-xs font-bold tracking-widest uppercase py-2 hover:opacity-90">Publicar</button>
+                <button type="button" onClick={() => setShowForm(false)} className="border border-border text-muted-foreground text-xs px-4 py-2 hover:text-foreground transition-colors">Cancelar</button>
               </div>
             </div>
           </form>
         )}
 
-        <div className="grid gap-5">
+        <div className="grid gap-4">
           {avisos.map((a) => (
-            <div key={a.id} className="bg-card border border-border rounded-xl p-6 animate-fade-in relative group">
+            <div key={a.id} className="border border-border p-5 relative group">
               <button
                 onClick={() => removeAviso(a.id)}
-                className="absolute top-3 right-3 bg-destructive/80 text-destructive-foreground rounded-full w-7 h-7 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-2 right-2 text-destructive text-[10px] tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity border border-destructive px-2 py-0.5"
               >
-                ✕
+                ✕ Borrar
               </button>
-              <p className="text-xs text-muted-foreground mb-2">{a.fecha}</p>
-              <h2 className="text-gold font-bold text-lg mb-3">{a.titulo}</h2>
-              <p className="text-foreground text-sm leading-relaxed whitespace-pre-wrap">{a.contenido}</p>
+              <p className="text-[9px] text-muted-foreground tracking-wider uppercase mb-1">{a.fecha}</p>
+              <h2 className="text-gold font-bold text-sm tracking-wider mb-2">{a.titulo}</h2>
+              <p className="text-value text-[11px] leading-relaxed whitespace-pre-wrap">{a.contenido}</p>
             </div>
           ))}
         </div>
-        <div className="bar-pattern w-full h-2 rounded-full mt-8" />
+        <div className="bg-accent-bar h-[2px] mt-8" />
       </div>
     </div>
   );
