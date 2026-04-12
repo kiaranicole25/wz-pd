@@ -21,6 +21,9 @@ const NoticiasPage = () => {
   const [passInput, setPassInput] = useState('');
   const [passError, setPassError] = useState('');
   const [form, setForm] = useState({ titulo: '', desarrollo: '', imagen: '' });
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+  const [deletePass, setDeletePass] = useState('');
+  const [deleteError, setDeleteError] = useState('');
 
   const saveNoticias = (list: Noticia[]) => {
     setNoticias(list);
@@ -52,8 +55,16 @@ const NoticiasPage = () => {
     setShowForm(false);
   };
 
-  const removeNoticia = (id: string) => {
-    saveNoticias(noticias.filter((n) => n.id !== id));
+  const handleDelete = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (deletePass === NEWS_PASSWORD && deleteTarget) {
+      saveNoticias(noticias.filter((n) => n.id !== deleteTarget));
+      setDeleteTarget(null);
+      setDeletePass('');
+      setDeleteError('');
+    } else {
+      setDeleteError('Acceso denegado');
+    }
   };
 
   return (
@@ -112,7 +123,7 @@ const NoticiasPage = () => {
             {noticias.map((n) => (
               <article key={n.id} className="border border-border relative group">
                 <button
-                  onClick={() => removeNoticia(n.id)}
+                  onClick={() => { setDeleteTarget(n.id); setDeletePass(''); setDeleteError(''); }}
                   className="absolute top-2 right-2 z-10 text-destructive text-[10px] tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity border border-destructive px-2 py-0.5"
                 >
                   ✕ Borrar
