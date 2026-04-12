@@ -21,15 +21,15 @@ const Index = () => {
       <p className="text-gold-dim text-[10px] italic tracking-wider mb-10">
         "To Protect and to Serve"
       </p>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-2xl mb-10">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-4xl mb-10">
         {tabs.map((tab) => (
           <Link
             key={tab.path}
             to={tab.path}
-            className="border border-border hover:border-gold py-6 px-4 text-center transition-colors group"
+            className="border border-border hover:border-gold py-5 px-3 text-center transition-colors group"
           >
-            <div className="text-gold font-bold text-sm tracking-[0.2em] group-hover:tracking-[0.3em] transition-all">
-              [{tab.label}]
+            <div className="text-gold font-bold text-[11px] tracking-[0.15em] group-hover:tracking-[0.2em] transition-all">
+              {tab.label}
             </div>
             <div className="text-muted-foreground text-[9px] tracking-wider uppercase mt-2">{tab.desc}</div>
           </Link>
