@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 const LOGO_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Seal_of_the_Los_Angeles_Police_Department.png/250px-Seal_of_the_Los_Angeles_Police_Department.png';
 
 const tabs = [
-  { path: '/sapd', label: 'SAPD', desc: 'Jerarquía del Departamento' },
-  { path: '/vetados', label: 'VETOS', desc: 'Personal Vetado' },
-  { path: '/noticias', label: 'Noticias', desc: 'Noticias del Departamento' },
-  { path: '/importante', label: 'Importante', desc: 'Avisos Oficiales' },
+  { path: '/sapd', label: 'Departamento de Policías', desc: 'Jerarquía del Departamento' },
+  { path: '/vetados', label: 'Registro de Vetados', desc: 'Personal Vetado' },
+  { path: '/noticias', label: 'Relaciones Públicas y Noticias', desc: 'Noticias del Departamento' },
+  { path: '/importante', label: 'Avisos Importantes', desc: 'Avisos Oficiales' },
 ];
 
 const Index = () => {
