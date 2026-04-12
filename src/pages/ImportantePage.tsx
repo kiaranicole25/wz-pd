@@ -27,6 +27,9 @@ const ImportantePage = () => {
   const [passInput, setPassInput] = useState('');
   const [passError, setPassError] = useState('');
   const [form, setForm] = useState({ titulo: '', contenido: '' });
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+  const [deletePass, setDeletePass] = useState('');
+  const [deleteError, setDeleteError] = useState('');
 
   const saveAvisos = (list: Aviso[]) => {
     setAvisos(list);
@@ -57,8 +60,16 @@ const ImportantePage = () => {
     setShowForm(false);
   };
 
-  const removeAviso = (id: string) => {
-    saveAvisos(avisos.filter((a) => a.id !== id));
+  const handleDelete = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (deletePass === AVISO_PASSWORD && deleteTarget) {
+      saveAvisos(avisos.filter((a) => a.id !== deleteTarget));
+      setDeleteTarget(null);
+      setDeletePass('');
+      setDeleteError('');
+    } else {
+      setDeleteError('Acceso denegado');
+    }
   };
 
   return (
