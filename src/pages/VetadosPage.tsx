@@ -51,55 +51,55 @@ const VetadosPage = () => {
   return (
     <div className="min-h-screen">
       <NavBar />
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-5xl mx-auto px-6 py-10">
         <PasswordGate
           title="Administración SAPD — Ingrese sus credenciales"
           showUsername
           onAuth={handleAuth}
         >
-          <div className="bg-accent-bar h-[2px] mb-6" />
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-gold text-sm font-bold tracking-[0.3em] uppercase">
+          <div className="bg-accent-bar h-[2px] mb-8" />
+          <div className="flex items-center justify-between mb-8">
+            <h1 className="text-gold text-lg font-bold tracking-[0.3em] uppercase">
               Personal Vetado — SAPD
             </h1>
             <button
               onClick={() => setShowForm(!showForm)}
-              className="bg-primary text-primary-foreground text-[10px] font-bold tracking-widest uppercase px-4 py-2 hover:opacity-90 transition-opacity"
+              className="bg-primary text-primary-foreground text-xs font-bold tracking-widest uppercase px-5 py-2.5 hover:opacity-90 transition-opacity"
             >
               {showForm ? 'Cancelar' : '+ Agregar Vetado'}
             </button>
           </div>
 
           {showForm && (
-            <form onSubmit={addVetado} className="border border-border p-5 mb-6">
-              <h3 className="text-gold font-bold text-[10px] tracking-[0.2em] uppercase mb-4">Agregar Vetado</h3>
-              <div className="grid gap-3">
-                <input placeholder="Nombre_Apellido" value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })} className="bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono" />
-                <input placeholder="Discord ID" value={form.discordId} onChange={(e) => setForm({ ...form, discordId: e.target.value })} className="bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono" />
-                <input placeholder="Motivo" value={form.motivo} onChange={(e) => setForm({ ...form, motivo: e.target.value })} className="bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono" />
-                <button type="submit" className="bg-primary text-primary-foreground text-xs font-bold tracking-widest uppercase py-2 hover:opacity-90">Confirmar</button>
+            <form onSubmit={addVetado} className="border border-border p-6 mb-8">
+              <h3 className="text-gold font-bold text-xs tracking-[0.2em] uppercase mb-5">Agregar Vetado</h3>
+              <div className="grid gap-4">
+                <input placeholder="Nombre_Apellido" value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })} className="bg-muted border border-border text-foreground text-sm px-4 py-2.5 outline-none focus:border-primary font-mono" />
+                <input placeholder="Discord ID" value={form.discordId} onChange={(e) => setForm({ ...form, discordId: e.target.value })} className="bg-muted border border-border text-foreground text-sm px-4 py-2.5 outline-none focus:border-primary font-mono" />
+                <input placeholder="Motivo" value={form.motivo} onChange={(e) => setForm({ ...form, motivo: e.target.value })} className="bg-muted border border-border text-foreground text-sm px-4 py-2.5 outline-none focus:border-primary font-mono" />
+                <button type="submit" className="bg-primary text-primary-foreground text-sm font-bold tracking-widest uppercase py-2.5 hover:opacity-90">Confirmar</button>
               </div>
             </form>
           )}
 
           {/* Table header */}
-          <div className="veto-header grid grid-cols-[1fr_1fr_2fr] px-4 py-2 border-l-4 border-gold">
-            <span className="text-gold text-[10px] font-bold tracking-widest uppercase">Nombre DP</span>
-            <span className="text-gold text-[10px] font-bold tracking-widest uppercase">Discord ID</span>
-            <span className="text-gold text-[10px] font-bold tracking-widest uppercase">Motivo</span>
+          <div className="veto-header grid grid-cols-[1fr_1fr_2fr] px-5 py-3 border-l-4 border-gold">
+            <span className="text-gold text-xs font-bold tracking-widest uppercase">Nombre DP</span>
+            <span className="text-gold text-xs font-bold tracking-widest uppercase">Discord ID</span>
+            <span className="text-gold text-xs font-bold tracking-widest uppercase">Motivo</span>
           </div>
 
           {vetados.map((v, i) => (
             <div
               key={v.id}
-              className={`grid grid-cols-[1fr_1fr_2fr] px-4 py-2.5 border-b border-border group relative ${i % 2 === 0 ? 'bg-row-even' : 'bg-row-odd'}`}
+              className={`grid grid-cols-[1fr_1fr_2fr] px-5 py-3 border-b border-border group relative ${i % 2 === 0 ? 'bg-row-even' : 'bg-row-odd'}`}
             >
-              <span className="text-value text-[11px]">{v.nombre}</span>
-              <span className="text-value text-[11px] font-mono">{v.discordId}</span>
-              <span className="text-value text-[11px] pr-6">{v.motivo}</span>
+              <span className="text-value text-sm">{v.nombre}</span>
+              <span className="text-value text-sm font-mono">{v.discordId}</span>
+              <span className="text-value text-sm pr-8">{v.motivo}</span>
               <button
                 onClick={() => removeVetado(v.id)}
-                className="absolute top-1 right-2 text-destructive text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-2 right-3 text-destructive text-xs opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 ✕
               </button>
@@ -107,11 +107,11 @@ const VetadosPage = () => {
           ))}
 
           {vetados.length === 0 && (
-            <div className="border border-border p-8 text-center">
-              <p className="text-muted-foreground text-[10px] tracking-wider uppercase">No hay personal vetado registrado.</p>
+            <div className="border border-border p-10 text-center">
+              <p className="text-muted-foreground text-sm tracking-wider uppercase">No hay personal vetado registrado.</p>
             </div>
           )}
-          <div className="bg-accent-bar h-[2px] mt-6" />
+          <div className="bg-accent-bar h-[2px] mt-8" />
         </PasswordGate>
       </div>
     </div>
