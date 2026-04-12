@@ -122,7 +122,7 @@ const ImportantePage = () => {
           {avisos.map((a) => (
             <div key={a.id} className="border border-border p-5 relative group">
               <button
-                onClick={() => removeAviso(a.id)}
+                onClick={() => { setDeleteTarget(a.id); setDeletePass(''); setDeleteError(''); }}
                 className="absolute top-2 right-2 text-destructive text-[10px] tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity border border-destructive px-2 py-0.5"
               >
                 ✕ Borrar
