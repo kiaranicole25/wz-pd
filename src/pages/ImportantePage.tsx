@@ -133,6 +133,31 @@ const ImportantePage = () => {
             </div>
           ))}
         </div>
+
+        {/* Delete confirmation modal */}
+        {deleteTarget && (
+          <div className="fixed inset-0 bg-background/80 flex items-center justify-center z-50">
+            <form onSubmit={handleDelete} className="border-2 border-gold p-5 w-full max-w-sm bg-background">
+              <h3 className="text-gold font-bold text-[10px] tracking-[0.15em] uppercase mb-4 text-center">
+                Ingrese la contraseña para borrar
+              </h3>
+              <input
+                type="password"
+                placeholder="Contraseña"
+                value={deletePass}
+                onChange={(e) => setDeletePass(e.target.value)}
+                className="w-full bg-muted border border-border text-foreground text-xs px-3 py-2 outline-none focus:border-primary font-mono mb-3"
+                autoFocus
+              />
+              {deleteError && <p className="text-destructive text-[10px] text-center mb-3 tracking-wider uppercase">✕ {deleteError}</p>}
+              <div className="flex gap-2">
+                <button type="submit" className="flex-1 bg-destructive text-destructive-foreground text-xs font-bold tracking-widest uppercase py-2 hover:opacity-90">Confirmar</button>
+                <button type="button" onClick={() => setDeleteTarget(null)} className="border border-border text-muted-foreground text-xs px-4 py-2 hover:text-foreground">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        )}
+
         <div className="bg-accent-bar h-[2px] mt-8" />
       </div>
     </div>
