@@ -68,12 +68,12 @@ export const officersByRango: Record<RangoKey, Officer[]> = {
     { ...o('Antwane_Legends', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Paul_Ivanov', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Francisco_Duff', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Dana_Lopez', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: 'https://i.ibb.co/0V2KzXgk/sadasdasda.png' },
   ],
   cabos: [
     { ...o('James_Wallthert', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('James_Bricceno', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Gino_Lesner', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
-    { ...o('Dana_Lopez', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Mike_Taylor', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Karina_Beckenbauer', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Tiven_Gomez', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
