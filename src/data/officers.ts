@@ -10,6 +10,39 @@ export interface Officer {
   imagen?: string;
 }
 
+export type RangoKey =
+  | 'comisarios'
+  | 'inspectores'
+  | 'capitanes'
+  | 'tenientes'
+  | 'sargentos'
+  | 'cabos'
+  | 'oficiales'
+  | 'cadetes';
+
+export const RANGOS: { key: RangoKey; label: string }[] = [
+  { key: 'comisarios', label: 'COMISARIOS' },
+  { key: 'inspectores', label: 'INSPECTORES' },
+  { key: 'capitanes', label: 'CAPITANES' },
+  { key: 'tenientes', label: 'TENIENTES' },
+  { key: 'sargentos', label: 'SARGENTOS' },
+  { key: 'cabos', label: 'CABOS' },
+  { key: 'oficiales', label: 'OFICIALES' },
+  { key: 'cadetes', label: 'CADETES' },
+];
+
+let _id = 0;
+const o = (nombre: string, rango: string): Officer => ({
+  id: String(++_id),
+  nombre,
+  rango,
+  cargo: '',
+  division: '',
+  placa: '',
+  expediente: `EXP-${String(_id).padStart(4, '0')}`,
+  notas: 'Vacío por ahora',
+});
+
 export const officersByRango: Record<RangoKey, Officer[]> = {
   comisarios: [
     { ...o('Mike_Holloway', 'Comisario'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
