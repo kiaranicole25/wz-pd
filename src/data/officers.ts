@@ -10,84 +10,59 @@ export interface Officer {
   imagen?: string;
 }
 
-export type RangoKey = 'comisarios' | 'inspectores' | 'capitanes' | 'tenientes' | 'sargentos' | 'cabos' | 'oficiales' | 'cadetes';
-
-export const RANGOS: { key: RangoKey; label: string }[] = [
-  { key: 'comisarios', label: 'COMISARIOS' },
-  { key: 'inspectores', label: 'INSPECTORES' },
-  { key: 'capitanes', label: 'CAPITANES' },
-  { key: 'tenientes', label: 'TENIENTES' },
-  { key: 'sargentos', label: 'SARGENTOS' },
-  { key: 'cabos', label: 'CABOS' },
-  { key: 'oficiales', label: 'OFICIALES' },
-  { key: 'cadetes', label: 'CADETES' },
-];
-
-let _id = 0;
-const o = (nombre: string, rango: string): Officer => ({
-  id: String(++_id),
-  nombre,
-  rango,
-  cargo: '',
-  division: '',
-  placa: '',
-  expediente: `EXP-${String(_id).padStart(4, '0')}`,
-  notas: 'Vacío por ahora',
-});
-
 export const officersByRango: Record<RangoKey, Officer[]> = {
   comisarios: [
-    { ...o('Mike_Holloway', 'Comisario'), cargo: 'Encargado Facción', placa: '#2526', division: 'D.I', imagen: '' },
-    { ...o('Kendo_Lockser', 'Comisario'), cargo: 'Encargado Facción', placa: '#2705', division: 'SWAT', imagen: 'https://i.ibb.co/60jS7Yzz/SAPD-Kendo.png' },
+    { ...o('Mike_Holloway', 'Comisario'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Kendo_Lockser', 'Comisario'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
   ],
   inspectores: [
-    o('Dashy_Woods', 'Inspector'),
-    o('Izhan_Grunewaldt', 'Inspector'),
-    o('Kenny_Parker', 'Inspector'),
+    { ...o('Dashy_Woods', 'Inspector'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Izhan_Grunewaldt', 'Inspector'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Kenny_Parker', 'Inspector'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
   ],
   capitanes: [
-    o('Andrew_Quintero', 'Capitán'),
-    o('Carpe_Diem', 'Capitán'),
+    { ...o('Andrew_Quintero', 'Capitán'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Carpe_Diem', 'Capitán'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
   ],
   tenientes: [
-    o('Thiago_Schneider', 'Teniente'),
-    o('Aslan_Mog', 'Teniente'),
-    o('Alan_Cronck', 'Teniente'),
+    { ...o('Thiago_Schneider', 'Teniente'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Aslan_Mog', 'Teniente'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Alan_Cronck', 'Teniente'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
   ],
   sargentos: [
-    o('Jhon_Conor', 'Sargento'),
-    o('Harvey_Shikpa', 'Sargento'),
-    o('Antwane_Legends', 'Sargento'),
-    o('Francisco_Duff', 'Sargento'),
+    { ...o('Jhon_Conor', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Harvey_Shikpa', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Antwane_Legends', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Francisco_Duff', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
   ],
   cabos: [
-    o('James_Wallthert', 'Cabo'),
-    o('James_Bricceno', 'Cabo'),
-    o('Gino_Lesner', 'Cabo'),
-    o('Dana_Lopez', 'Cabo'),
-    o('Mike_Taylor', 'Cabo'),
-    o('Karina_Beckenbauer', 'Cabo'),
-    o('Tiven_Gomez', 'Cabo'),
-    o('Night_Lesner', 'Cabo'),
-    o('David_Lazo', 'Cabo'),
-    o('Maxi_Gomez', 'Cabo'),
-    o('Eddie_Morgan', 'Cabo'),
+    { ...o('James_Wallthert', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('James_Bricceno', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Gino_Lesner', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Dana_Lopez', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Mike_Taylor', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Karina_Beckenbauer', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Tiven_Gomez', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Night_Lesner', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('David_Lazo', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Maxi_Gomez', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Eddie_Morgan', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
   ],
   oficiales: [
-    o('Chinny_Lesner', 'Oficial'),
-    o('Kryzhh_Lesner', 'Oficial'),
-    o('Kseniya_Kvaratkhelia', 'Oficial'),
-    o('Tryan_Cordozar', 'Oficial'),
+    { ...o('Chinny_Lesner', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Kryzhh_Lesner', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Kseniya_Kvaratkhelia', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Tryan_Cordozar', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
   ],
   cadetes: [
-    o('lucciano_ferroni', 'Cadete'),
-    o('Kenz_Kuznetsov', 'Cadete'),
-    o('Zed_Ghostly', 'Cadete'),
-    o('Jhoe_Fernandez', 'Cadete'),
-    o('Shadow_Black', 'Cadete'),
-    o('Grodell_Whinstronck', 'Cadete'),
-    o('Dylan_Moreno', 'Cadete'),
-    o('Lorenzo_Chevallier', 'Cadete'),
+    { ...o('lucciano_ferroni', 'Cadete'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Kenz_Kuznetsov', 'Cadete'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Zed_Ghostly', 'Cadete'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Jhoe_Fernandez', 'Cadete'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Shadow_Black', 'Cadete'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Grodell_Whinstronck', 'Cadete'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Dylan_Moreno', 'Cadete'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Lorenzo_Chevallier', 'Cadete'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
   ],
 };
 
