@@ -45,17 +45,17 @@ const o = (nombre: string, rango: string): Officer => ({
 
 export const officersByRango: Record<RangoKey, Officer[]> = {
   comisarios: [
-    { ...o('Mike_Holloway', 'Comisario'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
-    { ...o('Kendo_Lockser', 'Comisario'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Mike_Holloway', 'Comisario'), cargo: 'Encargado Facción', placa: '2526', division: 'División de Instructores', imagen: '' },
+    { ...o('Kendo_Lockser', 'Comisario'), cargo: 'Encargado Facción', placa: '2705', division: 'Special Weapons And Tactics', imagen: 'https://i.ibb.co/60jS7Yzz/SAPD-Kendo.png' },
   ],
   inspectores: [
-    { ...o('Dashy_Woods', 'Inspector'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
-    { ...o('Izhan_Grunewaldt', 'Inspector'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
-    { ...o('Kenny_Parker', 'Inspector'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Dashy_Woods', 'Inspector'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Izhan_Grunewaldt', 'Inspector'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Kenny_Parker', 'Inspector'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'NA', imagen: '' },
   ],
   capitanes: [
     { ...o('Andrew_Quintero', 'Capitán'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
-    { ...o('Carpe_Diem', 'Capitán'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Carpe_Diem', 'Capitán'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'NA', imagen: '' },
   ],
   tenientes: [
     { ...o('Thiago_Schneider', 'Teniente'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
@@ -66,6 +66,7 @@ export const officersByRango: Record<RangoKey, Officer[]> = {
     { ...o('Jhon_Conor', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Harvey_Shikpa', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Antwane_Legends', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Paul_Ivanov', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Francisco_Duff', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
   ],
   cabos: [
@@ -80,12 +81,16 @@ export const officersByRango: Record<RangoKey, Officer[]> = {
     { ...o('David_Lazo', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Maxi_Gomez', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Eddie_Morgan', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Derek_Frost', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
   ],
   oficiales: [
     { ...o('Chinny_Lesner', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Kryzhh_Lesner', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Kseniya_Kvaratkhelia', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Tryan_Cordozar', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Jaciel_Medina', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('James_Parker', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Misale_Chronos', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Franco_Tornillo', 'Oficial'), cargo: 'NA', placa: '2505', division: 'NA', imagen: 'https://i.ibb.co/Vp0LbkY5/SAPD-Hernandez.png' },
   ],
   cadetes: [
