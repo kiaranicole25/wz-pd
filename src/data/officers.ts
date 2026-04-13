@@ -49,7 +49,7 @@ export const officersByRango: Record<RangoKey, Officer[]> = {
     { ...o('Kendo_Lockser', 'Comisario'), cargo: 'Encargado Facción', placa: '2705', division: 'Special Weapons And Tactics', imagen: 'https://i.ibb.co/60jS7Yzz/SAPD-Kendo.png' },
   ],
   inspectores: [
-    { ...o('Dashy_Woods', 'Inspector'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Dashy_Woods', 'Inspector'), cargo: 'Cúpula Administrativa', placa: '3333', division: 'Lider de Special Waeapons and Tactics', imagen: 'https://i.ibb.co/MkW7cXv1/SAPD-SWAT.png' },
     { ...o('Izhan_Grunewaldt', 'Inspector'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Kenny_Parker', 'Inspector'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'NA', imagen: '' },
   ],
@@ -63,12 +63,12 @@ export const officersByRango: Record<RangoKey, Officer[]> = {
     { ...o('Alan_Cronck', 'Teniente'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
   ],
   sargentos: [
-    { ...o('Jhon_Conor', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
-    { ...o('Harvey_Shikpa', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Jhon_Conor', 'Sargento'), cargo: 'NA', placa: '2312', division: 'Special Weapons And Tactics', imagen: 'https://i.ibb.co/MkW7cXv1/SAPD-SWAT.png' },
+    { ...o('Harvey_Shikpa', 'Sargento'), cargo: 'NA', placa: '2707', division: 'Special Weapons And Tactics', imagen: 'https://i.ibb.co/MkW7cXv1/SAPD-SWAT.png' },
     { ...o('Antwane_Legends', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Paul_Ivanov', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Francisco_Duff', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
-    { ...o('Dana_Lopez', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: 'https://i.ibb.co/0V2KzXgk/sadasdasda.png' },
+    { ...o('Dana_Lopez', 'Sargento'), cargo: 'NA', placa: '7424', division: 'NA', imagen: 'https://i.ibb.co/0V2KzXgk/sadasdasda.png' },
   ],
   cabos: [
     { ...o('James_Wallthert', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
