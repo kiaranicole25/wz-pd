@@ -77,14 +77,8 @@ const ImportantePage = () => {
       <NavBar />
       <div className="max-w-5xl mx-auto px-6 py-10">
         <div className="bg-accent-bar h-[2px] mb-8" />
-        <div className="flex items-center justify-between mb-8">
+        <div className="mb-8">
           <h1 className="text-gold text-lg font-bold tracking-[0.3em] uppercase">Avisos Importantes — SAPD</h1>
-          <button
-            onClick={() => setShowForm(true)}
-            className="bg-primary text-primary-foreground text-xs font-bold tracking-widest uppercase px-5 py-2.5 hover:opacity-90 transition-opacity"
-          >
-            + Crear Aviso
-          </button>
         </div>
 
         {showForm && !authenticated && (
