@@ -53,7 +53,7 @@ const VetadosPage = () => {
       <NavBar />
       <div className="max-w-5xl mx-auto px-6 py-10">
         <PasswordGate
-          title="Administración SAPD — Ingrese sus credenciales"
+          title="Administración SAPD — Ingrese las credenciales que le asignaron en el Departamento"
           showUsername
           onAuth={handleAuth}
         >
