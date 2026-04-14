@@ -49,7 +49,7 @@ export const officersByRango: Record<RangoKey, Officer[]> = {
     { ...o('Kendo_Lockser', 'Comisario'), cargo: 'Encargado Facción', placa: '2705', division: 'Special Weapons And Tactics', imagen: 'https://i.ibb.co/60jS7Yzz/SAPD-Kendo.png' },
   ],
   inspectores: [
-    { ...o('Dashy_Woods', 'Inspector'), cargo: 'Cúpula Administrativa', placa: '3333', division: 'Lider de Special Waeapons and Tactics', imagen: 'https://i.ibb.co/MkW7cXv1/SAPD-SWAT.png' },
+    { ...o('Dashy_Woods', 'Inspector'), cargo: 'Cúpula Administrativa', placa: '3333', division: 'Lider de Special Waeapons and Tactics', imagen: 'https://ibb.co/DfsQ9qJM' },
     { ...o('Izhan_Grunewaldt', 'Inspector'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Kenny_Parker', 'Inspector'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'NA', imagen: '' },
   ],
