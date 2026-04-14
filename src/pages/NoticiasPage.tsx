@@ -73,12 +73,12 @@ const NoticiasPage = () => {
       <div className="max-w-5xl mx-auto px-6 py-10">
         <div className="bg-accent-bar h-[2px] mb-8" />
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-gold text-lg font-bold tracking-[0.3em] uppercase">Noticias SAPD</h1>
+          <h1 className="text-gold text-lg font-bold tracking-[0.3em] uppercase">Información Pública de SAPD</h1>
           <button
             onClick={() => setShowForm(true)}
             className="bg-primary text-primary-foreground text-xs font-bold tracking-widest uppercase px-5 py-2.5 hover:opacity-90 transition-opacity"
           >
-            + Añadir Noticia
+            + Añadir Publicación
           </button>
         </div>
 
@@ -101,11 +101,20 @@ const NoticiasPage = () => {
 
         {showForm && authenticated && (
           <form onSubmit={addNoticia} className="border border-border p-6 mb-8">
-            <h3 className="text-gold font-bold text-xs tracking-[0.2em] uppercase mb-5">Crear Noticia</h3>
+            <h3 className="text-gold font-bold text-xs tracking-[0.2em] uppercase mb-5">Crear Publicación</h3>
             <div className="grid gap-4">
-              <input placeholder="Título" value={form.titulo} onChange={(e) => setForm({ ...form, titulo: e.target.value })} className="bg-muted border border-border text-foreground text-sm px-4 py-2.5 outline-none focus:border-primary font-mono" />
-              <textarea placeholder="Desarrollo" value={form.desarrollo} onChange={(e) => setForm({ ...form, desarrollo: e.target.value })} className="bg-muted border border-border text-foreground text-sm px-4 py-2.5 outline-none focus:border-primary font-mono min-h-[120px] resize-y" />
-              <input placeholder="URL de imagen (opcional)" value={form.imagen} onChange={(e) => setForm({ ...form, imagen: e.target.value })} className="bg-muted border border-border text-foreground text-sm px-4 py-2.5 outline-none focus:border-primary font-mono" />
+              <div>
+                <label className="text-gold text-xs font-bold tracking-wider uppercase mb-1 block">Título</label>
+                <input placeholder="Título de la publicación" value={form.titulo} onChange={(e) => setForm({ ...form, titulo: e.target.value })} className="w-full bg-muted border border-border text-foreground text-sm px-4 py-2.5 outline-none focus:border-primary font-mono" />
+              </div>
+              <div>
+                <label className="text-gold text-xs font-bold tracking-wider uppercase mb-1 block">Desarrollo</label>
+                <textarea placeholder="Contenido de la publicación" value={form.desarrollo} onChange={(e) => setForm({ ...form, desarrollo: e.target.value })} className="w-full bg-muted border border-border text-foreground text-sm px-4 py-2.5 outline-none focus:border-primary font-mono min-h-[120px] resize-y" />
+              </div>
+              <div>
+                <label className="text-gold text-xs font-bold tracking-wider uppercase mb-1 block">URL de Imagen</label>
+                <input placeholder="https://ejemplo.com/imagen.png (opcional)" value={form.imagen} onChange={(e) => setForm({ ...form, imagen: e.target.value })} className="w-full bg-muted border border-border text-foreground text-sm px-4 py-2.5 outline-none focus:border-primary font-mono" />
+              </div>
               <div className="flex gap-3">
                 <button type="submit" className="flex-1 bg-primary text-primary-foreground text-sm font-bold tracking-widest uppercase py-2.5 hover:opacity-90">Publicar</button>
                 <button type="button" onClick={() => setShowForm(false)} className="border border-border text-muted-foreground text-sm px-5 py-2.5 hover:text-foreground transition-colors">Cancelar</button>
@@ -116,7 +125,7 @@ const NoticiasPage = () => {
 
         {noticias.length === 0 ? (
           <div className="border border-border p-10 text-center">
-            <p className="text-muted-foreground text-sm tracking-wider uppercase">No hay noticias publicadas aún.</p>
+            <p className="text-muted-foreground text-sm tracking-wider uppercase">No hay publicaciones aún.</p>
           </div>
         ) : (
           <div className="grid gap-5">
