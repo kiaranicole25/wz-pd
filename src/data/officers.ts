@@ -50,12 +50,12 @@ export const officersByRango: Record<RangoKey, Officer[]> = {
   ],
   inspectores: [
     { ...o('Dashy_Woods', 'Inspector'), cargo: 'Cúpula Administrativa', placa: '3333', division: 'Lider de Special Waeapons and Tactics', imagen: 'https://i.ibb.co/MkW7cXv1/SAPD-SWAT.png' },
-    { ...o('Izhan_Grunewaldt', 'Inspector'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Izhan_Grunewaldt', 'Inspector'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'Confidencial', imagen: 'https://i.ibb.co/zwqzFD8/312123123.png' },
     { ...o('Kenny_Parker', 'Inspector'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'NA', imagen: '' },
   ],
   capitanes: [
-    { ...o('Andrew_Quintero', 'Capitán'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
-    { ...o('Carpe_Diem', 'Capitán'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Andrew_Quintero', 'Capitán'), cargo: 'NA', placa: 'NA', division: '6969', imagen: 'https://i.ibb.co/TxYbMV5c/sasdf2113.png' },
+    { ...o('Carpe_Diem', 'Capitán'), cargo: 'Cúpula Administrativa', placa: '1611', division: 'División de Instructores', imagen: 'https://i.ibb.co/TxYbMV5c/sasdf2113.png' },
   ],
   tenientes: [
     { ...o('Thiago_Schneider', 'Teniente'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
@@ -67,7 +67,7 @@ export const officersByRango: Record<RangoKey, Officer[]> = {
     { ...o('Harvey_Shikpa', 'Sargento'), cargo: 'NA', placa: '2707', division: 'Special Weapons And Tactics', imagen: 'https://i.ibb.co/MkW7cXv1/SAPD-SWAT.png' },
     { ...o('Antwane_Legends', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Paul_Ivanov', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
-    { ...o('Francisco_Duff', 'Sargento'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Francisco_Duff', 'Sargento'), cargo: 'NA', placa: '4359', division: 'Special Weapons and Tactics', imagen: 'https://i.ibb.co/PGLWbn9x/283pd.png' },
     { ...o('Dana_Lopez', 'Sargento'), cargo: 'NA', placa: '7424', division: 'NA', imagen: 'https://i.ibb.co/0V2KzXgk/sadasdasda.png' },
   ],
   cabos: [
@@ -78,15 +78,15 @@ export const officersByRango: Record<RangoKey, Officer[]> = {
     { ...o('Karina_Beckenbauer', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Tiven_Gomez', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Night_Lesner', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
-    { ...o('David_Lazo', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('David_Lazo', 'Cabo'), cargo: 'NA', placa: '1406', division: 'Special Weapons and Tactics', imagen: 'https://i.ibb.co/MkW7cXv1/SAPD-SWAT.png' },
     { ...o('Maxi_Gomez', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Eddie_Morgan', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
-    { ...o('Derek_Frost', 'Cabo'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Derek_Frost', 'Cabo'), cargo: 'NA', placa: '2247', division: 'NA', imagen: 'https://i.ibb.co/Q39GLH7N/asdasdasdsd2.png' },
   ],
   oficiales: [
     { ...o('Chinny_Lesner', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Kryzhh_Lesner', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
-    { ...o('Kseniya_Kvaratkhelia', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
+    { ...o('Kseniya_Kvaratkhelia', 'Oficial'), cargo: 'NA', placa: '3644', division: 'División de Instructores', imagen: 'https://i.ibb.co/gZDvpxc7/SAPD-Mujer-1.png' },
     { ...o('Tryan_Cordozar', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Jaciel_Medina', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('James_Parker', 'Oficial'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
