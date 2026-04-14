@@ -29,13 +29,13 @@ const NoticiasPage = () => {
         <div className="grid gap-5">
           {publicaciones.map((n) => (
             <article key={n.id} className="border border-border">
-              {n.imagen && (
-                <img src={n.imagen} alt={n.titulo} loading="lazy" className="w-full object-contain border-b border-border" />
-              )}
               <div className="p-6">
                 <h2 className="text-gold font-bold text-base tracking-wider mb-3">{n.titulo}</h2>
-                <p className="text-value text-sm leading-relaxed whitespace-pre-wrap">{n.desarrollo}</p>
+                <p className="text-value text-sm leading-relaxed whitespace-pre-wrap mb-4">{n.desarrollo}</p>
               </div>
+              {n.imagen && (
+                <img src={n.imagen} alt={n.titulo} loading="lazy" className="w-full object-contain border-t border-border" />
+              )}
             </article>
           ))}
         </div>
