@@ -13,9 +13,11 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8">
       <div className="bg-accent-bar w-full max-w-3xl h-[2px] mb-10" />
-      <img src={LOGO_URL} alt="SAPD" width={150} height={150} className="mb-8" />
-      <h1 className="text-gold text-4xl font-bold tracking-[0.4em] text-center mb-2">SAPD</h1>
-      <p className="text-muted-foreground text-sm tracking-[0.3em] uppercase mb-1">
+      <div className="flex items-center gap-5 mb-4">
+        <img src={LOGO_URL} alt="SAPD" width={100} height={100} />
+        <div className="flex flex-col">
+          <img src="https://i.ibb.co/nNPjL5QD/San-Andreas-Police-Dept.png" alt="San Andreas Police Dept" className="h-12 object-contain mb-1" />
+          <p className="text-muted-foreground text-sm tracking-[0.3em] uppercase">
         Law Enforcement Record & Police Blacklist
       </p>
       <p className="text-gold-dim text-sm italic tracking-wider mb-12">
