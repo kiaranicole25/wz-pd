@@ -94,7 +94,6 @@ export const officersByRango: Record<RangoKey, Officer[]> = {
     { ...o('Franco_Tornillo', 'Oficial'), cargo: 'NA', placa: '2505', division: 'NA', imagen: 'https://i.ibb.co/Vp0LbkY5/SAPD-Hernandez.png' },
   ],
   cadetes: [
-    { ...o('lucciano_ferroni', 'Cadete'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Kenz_Kuznetsov', 'Cadete'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Zed_Ghostly', 'Cadete'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
     { ...o('Jhoe_Fernandez', 'Cadete'), cargo: 'NA', placa: 'NA', division: 'NA', imagen: '' },
