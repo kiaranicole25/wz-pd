@@ -18,10 +18,12 @@ const Index = () => {
         <div className="flex flex-col">
           <img src="https://i.ibb.co/nNPjL5QD/San-Andreas-Police-Dept.png" alt="San Andreas Police Dept" className="h-12 object-contain mb-1" />
           <p className="text-muted-foreground text-sm tracking-[0.3em] uppercase">
-        Law Enforcement Record & Police Blacklist
-      </p>
-      <p className="text-gold-dim text-sm italic tracking-wider mb-12">
-        "To Protect and to Serve"
+            Law Enforcement Record & Police Blacklist — "To Protect and to Serve"
+          </p>
+        </div>
+      </div>
+      <p className="text-gold-dim text-base italic tracking-wider mb-12">
+        Bienvenido a la Base de Datos Oficial de Jerarquía del Departamento de Policía de San Andreas
       </p>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-5xl mb-10">
         {tabs.map((tab) => (
