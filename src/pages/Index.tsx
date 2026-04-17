@@ -5,7 +5,7 @@ const LOGO_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Seal
 const tabs = [
   { path: '/sapd', label: 'Departamento de Policías', desc: 'Jerarquía del Departamento' },
   { path: '/vetados', label: 'Registro de Vetados', desc: 'Personal Vetado' },
-  { path: '/noticias', label: 'Información Pública de SAPD', desc: 'Publicaciones Oficiales' },
+  { path: '/informacion', label: 'Información Pública de SAPD', desc: 'Publicaciones Oficiales' },
   { path: '/importante', label: 'Avisos Importantes', desc: 'Avisos Oficiales' },
 ];
 
