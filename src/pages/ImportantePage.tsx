@@ -11,7 +11,7 @@ const avisos: Aviso[] = [
   {
     id: 'default-2',
     titulo: 'Registro de Zonas Rojas Disponible',
-    contenido: 'Se informa a todo el personal que se ha añadido el registro oficial de Zonas Rojas del Departamento en el apartado de Información Pública.\n\nConsulte el mapa y las indicaciones en: https://wz-pd.lovable.app/informacion',
+    contenido: 'Se informa a todo el personal que se ha añadido el registro oficial de Zonas Rojas del Departamento en el apartado de Información Pública.\n\nConsulte el mapa y las indicaciones en: https://wz-pd.lovable.app/noticias',
     fecha: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' }),
   },
   {
