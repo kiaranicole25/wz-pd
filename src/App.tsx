@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import SAPDPage from "./pages/SAPDPage.tsx";
 import VetadosPage from "./pages/VetadosPage.tsx";
 import NoticiasPage from "./pages/NoticiasPage.tsx";
+
 import ImportantePage from "./pages/ImportantePage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
