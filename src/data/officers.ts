@@ -58,8 +58,8 @@ export const officersByRango: Record<RangoKey, Officer[]> = {
     { ...o('Carpe_Diem', 'Capitán'), cargo: 'Cúpula Administrativa', placa: '1611', division: 'División de Instructores', imagen: 'https://i.ibb.co/TxYbMV5c/sasdf2113.png' },
   ],
   tenientes: [
-    { ...o('Thiago_Schneider', 'Teniente'), cargo: 'NA', placa: '9905', division: 'NA', imagen: 'https://i.ibb.co/8LbSc8zB/SAPD-LS.png' },
-    { ...o('Aslan_Mog', 'Teniente'), cargo: 'NA', placa: '9906', division: 'NA', imagen: 'https://i.ibb.co/8LbSc8zB/SAPD-LS.png' },
+    { ...o('Thiago_Schneider', 'Teniente'), cargo: 'NA', placa: ':7777', division: 'Division de Instructores', imagen: 'https://i.ibb.co/PGLWbn9x/283pd.png' },
+    { ...o('Aslan_Mog', 'Teniente'), cargo: 'NA', placa: '7373', division: 'NA', imagen: 'https://i.ibb.co/SwVXhRC4/IMG-20260415-221122.png' },
     { ...o('Alan_Cronck', 'Teniente'), cargo: 'NA', placa: '9907', division: 'NA', imagen: 'https://i.ibb.co/8LbSc8zB/SAPD-LS.png' },
   ],
   sargentos: [
@@ -88,7 +88,7 @@ export const officersByRango: Record<RangoKey, Officer[]> = {
     { ...o('Kryzhh_Lesner', 'Oficial'), cargo: 'NA', placa: '9992', division: 'NA', imagen: 'https://i.ibb.co/8LbSc8zB/SAPD-LS.png' },
     { ...o('Kseniya_Kvaratkhelia', 'Oficial'), cargo: 'NA', placa: '3644', division: 'División de Instructores', imagen: 'https://i.ibb.co/gZDvpxc7/SAPD-Mujer-1.png' },
     { ...o('Tryan_Cordozar', 'Oficial'), cargo: 'NA', placa: '9993', division: 'NA', imagen: 'https://i.ibb.co/8LbSc8zB/SAPD-LS.png' },
-    { ...o('Jaciel_Medina', 'Oficial'), cargo: 'NA', placa: '9994', division: 'NA', imagen: 'https://i.ibb.co/8LbSc8zB/SAPD-LS.png' },
+    { ...o('Jaciel_Medina', 'Oficial'), cargo: 'NA', placa: '3035', division: 'NA', imagen: 'https://i.ibb.co/gZDvpxc7/SAPD-Mujer-1.png' },
     { ...o('James_Parker', 'Oficial'), cargo: 'NA', placa: '5025', division: 'NA', imagen: 'https://i.ibb.co/8LbSc8zB/SAPD-LS.png' },
     { ...o('Misael_Chronos', 'Oficial'), cargo: 'NA', placa: '9995', division: 'NA', imagen: 'https://i.ibb.co/8LbSc8zB/SAPD-LS.png' },
     { ...o('Franco_Tornillo', 'Oficial'), cargo: 'NA', placa: '2505', division: 'NA', imagen: 'https://i.ibb.co/Vp0LbkY5/SAPD-Hernandez.png' },
