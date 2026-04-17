@@ -50,12 +50,12 @@ export const officersByRango: Record<RangoKey, Officer[]> = {
   ],
   inspectores: [
     { ...o('Dashy_Woods', 'Inspector'), cargo: 'Cúpula Administrativa', placa: '3333', division: 'Lider de Special Waeapons and Tactics', imagen: 'https://i.ibb.co/MkW7cXv1/SAPD-SWAT.png' },
-    { ...o('Izhan_Grunewaldt', 'Inspector'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'Confidencial', imagen: 'https://i.ibb.co/zwqzFD8/312123123.png' },
+    { ...o('Izhan_Grunewaldt', 'Inspector'), cargo: 'Cúpula Administrativa', placa: 'NA', division: 'NA', imagen: 'https://i.ibb.co/zwqzFD8/312123123.png' },
     { ...o('Kenny_Parker', 'Inspector'), cargo: 'Cúpula Administrativa', placa: ' 3164', division: 'Lider de División de Instructores', imagen: 'https://i.ibb.co/PGLWbn9x/283pd.png' },
   ],
   capitanes: [
     { ...o('Andrew_Quintero', 'Capitán'), cargo: 'NA', placa: '6969', division: 'N/A', imagen: 'https://i.ibb.co/TxYbMV5c/sasdf2113.png' },
-    { ...o('Carpe_Diem', 'Capitán'), cargo: 'Cúpula Administrativa', placa: '1611', division: 'División de Instructores', imagen: 'https://i.ibb.co/TxYbMV5c/sasdf2113.png' },
+    { ...o('Carpe_Diem', 'Capitán'), cargo: 'Cúpula Administrativa', placa: '1611', division: 'Confidencial', imagen: 'https://i.ibb.co/TxYbMV5c/sasdf2113.png' },
   ],
   tenientes: [
     { ...o('Thiago_Schneider', 'Teniente'), cargo: 'NA', placa: ':7777', division: 'Division de Instructores', imagen: 'https://i.ibb.co/PGLWbn9x/283pd.png' },
