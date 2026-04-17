@@ -5,7 +5,7 @@ const LOGO_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Seal
 const tabs = [
   { path: '/sapd', label: 'Departamento' },
   { path: '/vetados', label: 'Vetados' },
-  { path: '/noticias', label: 'Información' },
+  { path: '/informacion', label: 'Información' },
   { path: '/importante', label: 'Importante' },
 ];
 

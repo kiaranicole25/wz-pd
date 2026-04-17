@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import SAPDPage from "./pages/SAPDPage.tsx";
 import VetadosPage from "./pages/VetadosPage.tsx";
 import NoticiasPage from "./pages/NoticiasPage.tsx";
+
 import ImportantePage from "./pages/ImportantePage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -22,7 +23,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/sapd" element={<SAPDPage />} />
           <Route path="/vetados" element={<VetadosPage />} />
-          <Route path="/noticias" element={<NoticiasPage />} />
+          <Route path="/informacion" element={<NoticiasPage />} />
           <Route path="/importante" element={<ImportantePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
