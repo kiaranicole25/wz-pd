@@ -20,7 +20,7 @@ import { Loader2 } from 'lucide-react';
 
 const schema = z.object({
   nombre: z.string().trim().min(1, 'Requerido').max(150),
-  discord_id: z.string().trim().max(150).default('No figura'),
+  discord_id: z.string().trim().max(150),
   motivo: z.string().trim().min(1, 'Requerido').max(500),
 });
 
