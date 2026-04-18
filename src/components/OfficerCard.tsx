@@ -1,4 +1,6 @@
-import type { Officer } from '@/data/officers';
+import type { PersonalRow } from '@/hooks/useSAPDData';
+import { useAdmin } from '@/context/AdminContext';
+import { Pencil, Trash2 } from 'lucide-react';
 
 const SIN_FOTO = () => (
   <div className="w-28 h-32 border border-gold flex items-center justify-center bg-muted">
@@ -6,13 +8,21 @@ const SIN_FOTO = () => (
   </div>
 );
 
-const OfficerCard = ({ officer }: { officer: Officer }) => {
+interface Props {
+  officer: PersonalRow;
+  onEdit?: (o: PersonalRow) => void;
+  onDelete?: (o: PersonalRow) => void;
+}
+
+const OfficerCard = ({ officer, onEdit, onDelete }: Props) => {
+  const { isAdmin } = useAdmin();
+
   return (
-    <div className="flex gap-5 border-b border-border py-4">
+    <div className="flex gap-5 border-b border-border py-4 relative">
       <div className="flex flex-col items-center gap-1.5 shrink-0">
-        {officer.imagen ? (
+        {officer.imagen_url ? (
           <img
-            src={officer.imagen}
+            src={officer.imagen_url}
             alt={officer.nombre}
             loading="lazy"
             width={112}
@@ -29,7 +39,7 @@ const OfficerCard = ({ officer }: { officer: Officer }) => {
 
       <div className="flex flex-col justify-center gap-1 text-sm min-w-0 w-full">
         <Row label="NOMBRE" value={officer.nombre} />
-        <Row label="RANGO" value={officer.rango} />
+        <Row label="RANGO" value={officer.rango?.label ?? ''} />
         <Row label="CARGO" value={officer.cargo} />
         <Row label="DIVISIÓN" value={officer.division} />
         <Row label="PLACA" value={officer.placa} />
@@ -41,6 +51,25 @@ const OfficerCard = ({ officer }: { officer: Officer }) => {
           </span>
         </div>
       </div>
+
+      {isAdmin && (
+        <div className="absolute top-3 right-3 flex gap-2">
+          <button
+            onClick={() => onEdit?.(officer)}
+            className="p-2 border border-gold text-gold hover:bg-gold hover:text-background transition-colors"
+            title="Editar"
+          >
+            <Pencil className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => onDelete?.(officer)}
+            className="p-2 border border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors"
+            title="Eliminar"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
