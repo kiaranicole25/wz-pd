@@ -29,12 +29,12 @@ import { Loader2, Upload } from 'lucide-react';
 const schema = z.object({
   nombre: z.string().trim().min(1, 'Requerido').max(100),
   rango_id: z.string().uuid('Selecciona un rango'),
-  cargo: z.string().trim().max(100).default('NA'),
-  division: z.string().trim().max(150).default('NA'),
-  placa: z.string().trim().max(20).default('NA'),
+  cargo: z.string().trim().max(100),
+  division: z.string().trim().max(150),
+  placa: z.string().trim().max(20),
   expediente: z.string().trim().min(1, 'Requerido').max(50),
-  notas: z.string().trim().max(500).default('Vacío por ahora'),
-  imagen_url: z.string().url().nullable().or(z.literal('')).optional(),
+  notas: z.string().trim().max(500),
+  imagen_url: z.string().url().or(z.literal('')),
 });
 
 type FormValues = z.infer<typeof schema>;
