@@ -14,7 +14,110 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      personal: {
+        Row: {
+          cargo: string
+          created_at: string
+          division: string
+          expediente: string
+          id: string
+          imagen_url: string | null
+          nombre: string
+          notas: string
+          placa: string
+          rango_id: string
+          updated_at: string
+        }
+        Insert: {
+          cargo?: string
+          created_at?: string
+          division?: string
+          expediente: string
+          id?: string
+          imagen_url?: string | null
+          nombre: string
+          notas?: string
+          placa?: string
+          rango_id: string
+          updated_at?: string
+        }
+        Update: {
+          cargo?: string
+          created_at?: string
+          division?: string
+          expediente?: string
+          id?: string
+          imagen_url?: string | null
+          nombre?: string
+          notas?: string
+          placa?: string
+          rango_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "personal_rango_id_fkey"
+            columns: ["rango_id"]
+            isOneToOne: false
+            referencedRelation: "rangos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rangos: {
+        Row: {
+          created_at: string
+          id: string
+          key: string
+          label: string
+          orden: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          key: string
+          label: string
+          orden: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          key?: string
+          label?: string
+          orden?: number
+        }
+        Relationships: []
+      }
+      vetados: {
+        Row: {
+          created_at: string
+          discord_id: string
+          id: string
+          motivo: string
+          nombre: string
+          orden: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          discord_id?: string
+          id?: string
+          motivo: string
+          nombre: string
+          orden?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          discord_id?: string
+          id?: string
+          motivo?: string
+          nombre?: string
+          orden?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
