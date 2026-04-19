@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,19 +16,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
 import { Loader2, Upload } from 'lucide-react';
 
 const schema = z.object({
   nombre: z.string().trim().min(1, 'Requerido').max(100),
-  rango_id: z.string().uuid('Selecciona un rango'),
+  rango_id: z.string().uuid('Selecciona un rango válido de la lista'),
   cargo: z.string().trim().max(100),
   division: z.string().trim().max(150),
   placa: z.string().trim().max(20),
@@ -147,23 +140,13 @@ const PersonalFormDialog = ({ open, onOpenChange, rangos, editing }: Props) => {
               <Input {...form.register('nombre')} className="font-mono" />
             </Field>
             <Field label="Rango" error={form.formState.errors.rango_id?.message}>
-              <Select
+              <RangoInput
+                rangos={rangos}
                 value={form.watch('rango_id')}
-                onValueChange={(v) =>
+                onChange={(v) =>
                   form.setValue('rango_id', v, { shouldValidate: true })
                 }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Seleccionar..." />
-                </SelectTrigger>
-                <SelectContent>
-                  {rangos.map((r) => (
-                    <SelectItem key={r.id} value={r.id}>
-                      {r.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              />
             </Field>
             <Field label="Cargo">
               <Input {...form.register('cargo')} />
@@ -243,6 +226,47 @@ const PersonalFormDialog = ({ open, onOpenChange, rangos, editing }: Props) => {
         </form>
       </DialogContent>
     </Dialog>
+  );
+};
+
+const RangoInput = ({
+  rangos,
+  value,
+  onChange,
+}: {
+  rangos: Rango[];
+  value: string;
+  onChange: (id: string) => void;
+}) => {
+  const selected = rangos.find((r) => r.id === value);
+  const [text, setText] = useState(selected?.label ?? '');
+
+  useEffect(() => {
+    if (selected && selected.label !== text) setText(selected.label);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  return (
+    <>
+      <Input
+        list="rangos-list"
+        value={text}
+        placeholder="Escribe o selecciona un rango..."
+        onChange={(e) => {
+          const v = e.target.value;
+          setText(v);
+          const match = rangos.find(
+            (r) => r.label.toLowerCase() === v.toLowerCase(),
+          );
+          onChange(match?.id ?? '');
+        }}
+      />
+      <datalist id="rangos-list">
+        {rangos.map((r) => (
+          <option key={r.id} value={r.label} />
+        ))}
+      </datalist>
+    </>
   );
 };
 
