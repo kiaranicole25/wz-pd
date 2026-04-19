@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      avisos_importantes: {
+        Row: {
+          created_at: string
+          desarrollo: string
+          id: string
+          imagen_url: string | null
+          redactor: string
+          titulo: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          desarrollo?: string
+          id?: string
+          imagen_url?: string | null
+          redactor?: string
+          titulo: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          desarrollo?: string
+          id?: string
+          imagen_url?: string | null
+          redactor?: string
+          titulo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      noticias: {
+        Row: {
+          created_at: string
+          desarrollo: string
+          id: string
+          imagen_url: string | null
+          redactor: string
+          titulo: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          desarrollo?: string
+          id?: string
+          imagen_url?: string | null
+          redactor?: string
+          titulo: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          desarrollo?: string
+          id?: string
+          imagen_url?: string | null
+          redactor?: string
+          titulo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       personal: {
         Row: {
           cargo: string
@@ -123,7 +183,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      next_expediente: { Args: never; Returns: string }
     }
     Enums: {
       [_ in never]: never
