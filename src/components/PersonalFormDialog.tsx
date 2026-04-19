@@ -85,7 +85,11 @@ const PersonalFormDialog = ({ open, onOpenChange, rangos, editing }: Props) => {
         imagen_url: editing.imagen_url ?? '',
       });
     } else {
-      form.reset(emptyValues());
+      const base = emptyValues();
+      form.reset(base);
+      fetchNextExpediente().then((exp) =>
+        form.setValue('expediente', exp, { shouldValidate: true }),
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, editing?.id]);
