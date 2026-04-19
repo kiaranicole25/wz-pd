@@ -32,6 +32,17 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+const DIVISIONES = [
+  'Lider de Division (SWAT)',
+  'Lider de Division (DT)',
+  'Lider de Division (DI)',
+  'Lider de Division (RR-PP)',
+  'Special Weapons And Tactics',
+  'Division de Detectives',
+  'Division de Instructores',
+  'Division de Relaciones Publicas',
+];
+
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -173,7 +184,16 @@ const PersonalFormDialog = ({ open, onOpenChange, rangos, editing }: Props) => {
               <Input {...form.register('cargo')} />
             </Field>
             <Field label="División">
-              <Input {...form.register('division')} />
+              <Input
+                {...form.register('division')}
+                list="divisiones-list"
+                placeholder="Escribe o selecciona..."
+              />
+              <datalist id="divisiones-list">
+                {DIVISIONES.map((d) => (
+                  <option key={d} value={d} />
+                ))}
+              </datalist>
             </Field>
             <Field label="Placa">
               <Input {...form.register('placa')} />
