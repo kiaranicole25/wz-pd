@@ -39,34 +39,45 @@ interface Props {
   editing?: PersonalRow | null;
 }
 
+const emptyValues = (): FormValues => ({
+  nombre: '',
+  rango_id: '',
+  cargo: 'NA',
+  division: 'NA',
+  placa: 'NA',
+  expediente: `EXP-${Date.now().toString().slice(-6)}`,
+  notas: 'Vacío por ahora',
+  imagen_url: '',
+});
+
 const PersonalFormDialog = ({ open, onOpenChange, rangos, editing }: Props) => {
   const qc = useQueryClient();
   const [uploading, setUploading] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    values: editing
-      ? {
-          nombre: editing.nombre,
-          rango_id: editing.rango_id,
-          cargo: editing.cargo,
-          division: editing.division,
-          placa: editing.placa,
-          expediente: editing.expediente,
-          notas: editing.notas,
-          imagen_url: editing.imagen_url ?? '',
-        }
-      : {
-          nombre: '',
-          rango_id: '',
-          cargo: 'NA',
-          division: 'NA',
-          placa: 'NA',
-          expediente: `EXP-${Date.now().toString().slice(-6)}`,
-          notas: 'Vacío por ahora',
-          imagen_url: '',
-        },
+    defaultValues: emptyValues(),
   });
+
+  // Reset form ONLY when dialog opens or editing target changes
+  useEffect(() => {
+    if (!open) return;
+    if (editing) {
+      form.reset({
+        nombre: editing.nombre,
+        rango_id: editing.rango_id,
+        cargo: editing.cargo,
+        division: editing.division,
+        placa: editing.placa,
+        expediente: editing.expediente,
+        notas: editing.notas,
+        imagen_url: editing.imagen_url ?? '',
+      });
+    } else {
+      form.reset(emptyValues());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, editing?.id]);
 
   const mutation = useMutation({
     mutationFn: async (values: FormValues) => {
@@ -91,7 +102,7 @@ const PersonalFormDialog = ({ open, onOpenChange, rangos, editing }: Props) => {
         title: editing ? 'Personal actualizado' : 'Personal agregado',
       });
       onOpenChange(false);
-      form.reset();
+      form.reset(emptyValues());
     },
     onError: (e: Error) => {
       toast({ title: 'Error', description: e.message, variant: 'destructive' });
@@ -132,7 +143,17 @@ const PersonalFormDialog = ({ open, onOpenChange, rangos, editing }: Props) => {
           </DialogTitle>
         </DialogHeader>
         <form
-          onSubmit={form.handleSubmit((v) => mutation.mutate(v))}
+          onSubmit={form.handleSubmit(
+            (v) => mutation.mutate(v),
+            (errors) => {
+              const first = Object.values(errors)[0]?.message as string | undefined;
+              toast({
+                title: 'Revisa el formulario',
+                description: first ?? 'Hay campos inválidos',
+                variant: 'destructive',
+              });
+            },
+          )}
           className="space-y-4"
         >
           <div className="grid grid-cols-2 gap-4">
