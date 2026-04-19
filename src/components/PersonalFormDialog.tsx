@@ -33,6 +33,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 const DIVISIONES = [
+  'N/A',
   'Lider de Division (SWAT)',
   'Lider de Division (DT)',
   'Lider de Division (DI)',
@@ -50,13 +51,19 @@ interface Props {
   editing?: PersonalRow | null;
 }
 
+const fetchNextExpediente = async (): Promise<string> => {
+  const { data, error } = await supabase.rpc('next_expediente' as never);
+  if (error || !data) return `EX-${Date.now().toString().slice(-5)}`;
+  return data as string;
+};
+
 const emptyValues = (): FormValues => ({
   nombre: '',
   rango_id: '',
   cargo: 'NA',
-  division: 'NA',
-  placa: 'NA',
-  expediente: `EXP-${Date.now().toString().slice(-6)}`,
+  division: 'N/A',
+  placa: '',
+  expediente: '',
   notas: 'Vacío por ahora',
   imagen_url: '',
 });
@@ -85,7 +92,11 @@ const PersonalFormDialog = ({ open, onOpenChange, rangos, editing }: Props) => {
         imagen_url: editing.imagen_url ?? '',
       });
     } else {
-      form.reset(emptyValues());
+      const base = emptyValues();
+      form.reset(base);
+      fetchNextExpediente().then((exp) =>
+        form.setValue('expediente', exp, { shouldValidate: true }),
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, editing?.id]);
