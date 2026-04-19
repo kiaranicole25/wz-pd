@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -241,10 +241,10 @@ const RangoInput = ({
   const selected = rangos.find((r) => r.id === value);
   const [text, setText] = useState(selected?.label ?? '');
 
-  // Sync when editing record loads
-  useState(() => {
-    if (selected) setText(selected.label);
-  });
+  useEffect(() => {
+    if (selected && selected.label !== text) setText(selected.label);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
 
   return (
     <>
