@@ -10,6 +10,7 @@ import VetadosPage from "./pages/VetadosPage.tsx";
 import NoticiasPage from "./pages/NoticiasPage.tsx";
 
 import ImportantePage from "./pages/ImportantePage.tsx";
+import LogsPage from "./pages/LogsPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
