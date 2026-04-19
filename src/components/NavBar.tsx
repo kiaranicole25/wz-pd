@@ -1,9 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
 import AdminButton from './AdminButton';
+import { useAdmin } from '@/context/AdminContext';
 
 const LOGO_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Seal_of_the_Los_Angeles_Police_Department.png/250px-Seal_of_the_Los_Angeles_Police_Department.png';
 
-const tabs = [
+const baseTabs = [
   { path: '/sapd', label: 'Departamento' },
   { path: '/vetados', label: 'Vetados' },
   { path: '/noticias', label: 'Información' },
@@ -12,6 +13,8 @@ const tabs = [
 
 const NavBar = () => {
   const location = useLocation();
+  const { isAdmin } = useAdmin();
+  const tabs = isAdmin ? [...baseTabs, { path: '/logs', label: 'Logs' }] : baseTabs;
 
   return (
     <nav className="border-b-2 border-gold">
