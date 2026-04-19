@@ -195,16 +195,16 @@ const PersonalFormDialog = ({ open, onOpenChange, rangos, editing }: Props) => {
               <Input {...form.register('cargo')} />
             </Field>
             <Field label="División">
-              <Input
+              <select
                 {...form.register('division')}
-                list="divisiones-list"
-                placeholder="Escribe o selecciona..."
-              />
-              <datalist id="divisiones-list">
+                className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              >
                 {DIVISIONES.map((d) => (
-                  <option key={d} value={d} />
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
                 ))}
-              </datalist>
+              </select>
             </Field>
             <Field label="Placa">
               <Input {...form.register('placa')} />
