@@ -143,7 +143,17 @@ const PersonalFormDialog = ({ open, onOpenChange, rangos, editing }: Props) => {
           </DialogTitle>
         </DialogHeader>
         <form
-          onSubmit={form.handleSubmit((v) => mutation.mutate(v))}
+          onSubmit={form.handleSubmit(
+            (v) => mutation.mutate(v),
+            (errors) => {
+              const first = Object.values(errors)[0]?.message as string | undefined;
+              toast({
+                title: 'Revisa el formulario',
+                description: first ?? 'Hay campos inválidos',
+                variant: 'destructive',
+              });
+            },
+          )}
           className="space-y-4"
         >
           <div className="grid grid-cols-2 gap-4">
