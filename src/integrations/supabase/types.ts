@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          action: string
+          actor_role: string
+          actor_username: string
+          area: string
+          created_at: string
+          detalle: string
+          id: string
+        }
+        Insert: {
+          action: string
+          actor_role: string
+          actor_username: string
+          area: string
+          created_at?: string
+          detalle?: string
+          id?: string
+        }
+        Update: {
+          action?: string
+          actor_role?: string
+          actor_username?: string
+          area?: string
+          created_at?: string
+          detalle?: string
+          id?: string
+        }
+        Relationships: []
+      }
       avisos_importantes: {
         Row: {
           created_at: string
@@ -41,6 +71,42 @@ export type Database = {
           redactor?: string
           titulo?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      cupula_users: {
+        Row: {
+          created_at: string
+          id: string
+          password_hash: string
+          perm_importantes: boolean
+          perm_noticias: boolean
+          perm_sapd: boolean
+          perm_vetados: boolean
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          password_hash: string
+          perm_importantes?: boolean
+          perm_noticias?: boolean
+          perm_sapd?: boolean
+          perm_vetados?: boolean
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          password_hash?: string
+          perm_importantes?: boolean
+          perm_noticias?: boolean
+          perm_sapd?: boolean
+          perm_vetados?: boolean
+          updated_at?: string
+          username?: string
         }
         Relationships: []
       }
@@ -180,7 +246,36 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      cupula_users_public: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          perm_importantes: boolean | null
+          perm_noticias: boolean | null
+          perm_sapd: boolean | null
+          perm_vetados: boolean | null
+          username: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          perm_importantes?: boolean | null
+          perm_noticias?: boolean | null
+          perm_sapd?: boolean | null
+          perm_vetados?: boolean | null
+          username?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          perm_importantes?: boolean | null
+          perm_noticias?: boolean | null
+          perm_sapd?: boolean | null
+          perm_vetados?: boolean | null
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       next_expediente: { Args: never; Returns: string }

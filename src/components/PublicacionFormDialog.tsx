@@ -17,6 +17,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
 import { Loader2, Upload } from 'lucide-react';
+import { useAdmin } from '@/context/AdminContext';
+import { logAction, AuditArea } from '@/lib/audit';
 
 const schema = z.object({
   redactor: z.string().trim().min(1, 'Requerido').max(100),
@@ -33,6 +35,7 @@ interface Props {
   table: 'noticias' | 'avisos_importantes';
   queryKey: string;
   label: string;
+  area: AuditArea;
 }
 
 const PublicacionFormDialog = ({
@@ -41,8 +44,10 @@ const PublicacionFormDialog = ({
   table,
   queryKey,
   label,
+  area,
 }: Props) => {
   const qc = useQueryClient();
+  const { username, role } = useAdmin();
   const [uploading, setUploading] = useState(false);
 
   const form = useForm<FormValues>({
@@ -60,6 +65,14 @@ const PublicacionFormDialog = ({
       const payload = { ...v, imagen_url: v.imagen_url || null };
       const { error } = await supabase.from(table).insert(payload);
       if (error) throw error;
+      if (role) {
+        await logAction(
+          { username, role },
+          area,
+          'crear',
+          `Creó ${label.toLowerCase()}: "${v.titulo}"`,
+        );
+      }
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [queryKey] });

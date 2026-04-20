@@ -6,6 +6,7 @@ import PersonalFormDialog from '@/components/PersonalFormDialog';
 import { useAdmin } from '@/context/AdminContext';
 import { useRangos, usePersonal, PersonalRow } from '@/hooks/useSAPDData';
 import { supabase } from '@/integrations/supabase/client';
+import { logAction } from '@/lib/audit';
 import { Button } from '@/components/ui/button';
 import {
   AlertDialog,
@@ -23,7 +24,8 @@ import { Loader2, Plus } from 'lucide-react';
 const LOGO_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Seal_of_the_Los_Angeles_Police_Department.png/250px-Seal_of_the_Los_Angeles_Police_Department.png';
 
 const SAPDPage = () => {
-  const { isAdmin } = useAdmin();
+  const { can, role, username } = useAdmin();
+  const canSAPD = can('sapd');
   const { data: rangos = [] } = useRangos();
   const { data: personal = [], isLoading } = usePersonal();
   const qc = useQueryClient();
@@ -33,9 +35,15 @@ const SAPDPage = () => {
   const [deleting, setDeleting] = useState<PersonalRow | null>(null);
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('personal').delete().eq('id', id);
+    mutationFn: async (p: PersonalRow) => {
+      const { error } = await supabase.from('personal').delete().eq('id', p.id);
       if (error) throw error;
+      await logAction(
+        { username, role: role! },
+        'sapd',
+        'borrar',
+        `Eliminó SAPD: ${p.nombre} (${p.expediente})`,
+      );
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['personal'] });
@@ -46,14 +54,12 @@ const SAPDPage = () => {
       toast({ title: 'Error', description: e.message, variant: 'destructive' }),
   });
 
-  const openCreate = () => {
-    setEditing(null);
-    setFormOpen(true);
-  };
-
-  const openEdit = (o: PersonalRow) => {
-    setEditing(o);
-    setFormOpen(true);
+  const guard = (fn: () => void) => {
+    if (!canSAPD) {
+      toast({ title: 'No tienes permisos suficientes', variant: 'destructive' });
+      return;
+    }
+    fn();
   };
 
   return (
@@ -79,9 +85,9 @@ const SAPDPage = () => {
         </div>
         <div className="bg-accent-bar h-[2px] mb-10" />
 
-        {isAdmin && (
+        {canSAPD && (
           <div className="mb-6 flex justify-end">
-            <Button onClick={openCreate} className="gap-2">
+            <Button onClick={() => guard(() => { setEditing(null); setFormOpen(true); })} className="gap-2">
               <Plus className="w-4 h-4" />
               Agregar personal
             </Button>
@@ -114,8 +120,9 @@ const SAPDPage = () => {
                       <OfficerCard
                         key={officer.id}
                         officer={officer}
-                        onEdit={openEdit}
-                        onDelete={setDeleting}
+                        canEdit={canSAPD}
+                        onEdit={(o) => guard(() => { setEditing(o); setFormOpen(true); })}
+                        onDelete={(o) => guard(() => setDeleting(o))}
                       />
                     ))
                   )}
@@ -143,7 +150,7 @@ const SAPDPage = () => {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => deleting && deleteMutation.mutate(deleting.id)}
+              onClick={() => deleting && deleteMutation.mutate(deleting)}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Eliminar

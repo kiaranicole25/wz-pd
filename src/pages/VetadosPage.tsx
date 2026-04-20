@@ -5,12 +5,14 @@ import VetadoFormDialog from '@/components/VetadoFormDialog';
 import { useAdmin } from '@/context/AdminContext';
 import { useVetados, VetadoRow } from '@/hooks/useSAPDData';
 import { Button } from '@/components/ui/button';
+import { toast } from '@/hooks/use-toast';
 import { Loader2, Pencil, Plus } from 'lucide-react';
 
 const VETADOS_PASSWORD = 'Deptosapd2026';
 
 const VetadosPageInner = () => {
-  const { isAdmin } = useAdmin();
+  const { can } = useAdmin();
+  const canVet = can('vetados');
   const { data: vetados = [], isLoading } = useVetados();
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<VetadoRow | null>(null);
@@ -19,13 +21,12 @@ const VetadosPageInner = () => {
     ? Math.max(...vetados.map((v) => v.orden)) + 1
     : 1;
 
-  const openCreate = () => {
-    setEditing(null);
-    setFormOpen(true);
-  };
-  const openEdit = (v: VetadoRow) => {
-    setEditing(v);
-    setFormOpen(true);
+  const guard = (fn: () => void) => {
+    if (!canVet) {
+      toast({ title: 'No tienes permisos suficientes', variant: 'destructive' });
+      return;
+    }
+    fn();
   };
 
   return (
@@ -35,8 +36,8 @@ const VetadosPageInner = () => {
         <h1 className="text-gold text-lg font-bold tracking-[0.3em] uppercase">
           Personal Vetado — SAPD
         </h1>
-        {isAdmin && (
-          <Button onClick={openCreate} className="gap-2">
+        {canVet && (
+          <Button onClick={() => guard(() => { setEditing(null); setFormOpen(true); })} className="gap-2">
             <Plus className="w-4 h-4" />
             Agregar vetado
           </Button>
@@ -45,13 +46,13 @@ const VetadosPageInner = () => {
 
       <div
         className={`veto-header grid ${
-          isAdmin ? 'grid-cols-[1fr_1fr_2fr_auto]' : 'grid-cols-[1fr_1fr_2fr]'
+          canVet ? 'grid-cols-[1fr_1fr_2fr_auto]' : 'grid-cols-[1fr_1fr_2fr]'
         } px-5 py-3 border-l-4 border-gold gap-2`}
       >
         <span className="text-gold text-xs font-bold tracking-widest uppercase">Nombre DP</span>
         <span className="text-gold text-xs font-bold tracking-widest uppercase">Discord ID</span>
         <span className="text-gold text-xs font-bold tracking-widest uppercase">Motivo</span>
-        {isAdmin && <span className="w-10" />}
+        {canVet && <span className="w-10" />}
       </div>
 
       {isLoading && (
@@ -64,7 +65,7 @@ const VetadosPageInner = () => {
         <div
           key={v.id}
           className={`grid ${
-            isAdmin ? 'grid-cols-[1fr_1fr_2fr_auto]' : 'grid-cols-[1fr_1fr_2fr]'
+            canVet ? 'grid-cols-[1fr_1fr_2fr_auto]' : 'grid-cols-[1fr_1fr_2fr]'
           } px-5 py-3 border-b border-border gap-2 items-center ${
             i % 2 === 0 ? 'bg-row-even' : 'bg-row-odd'
           }`}
@@ -72,9 +73,9 @@ const VetadosPageInner = () => {
           <span className="text-value text-sm">{v.nombre}</span>
           <span className="text-value text-sm font-mono break-all">{v.discord_id}</span>
           <span className="text-value text-sm">{v.motivo}</span>
-          {isAdmin && (
+          {canVet && (
             <button
-              onClick={() => openEdit(v)}
+              onClick={() => guard(() => { setEditing(v); setFormOpen(true); })}
               className="p-2 border border-gold text-gold hover:bg-gold hover:text-background transition-colors"
               title="Editar"
             >
@@ -104,6 +105,7 @@ const VetadosPageInner = () => {
 };
 
 const VetadosPage = () => {
+  const { isAdmin } = useAdmin();
   const handleAuth = (_username: string, password: string) =>
     password === VETADOS_PASSWORD;
 
@@ -111,12 +113,16 @@ const VetadosPage = () => {
     <div className="min-h-screen">
       <NavBar />
       <div className="max-w-5xl mx-auto px-6 py-10">
-        <PasswordGate
-          title="Administración SAPD — Ingrese la contraseña del Departamento"
-          onAuth={handleAuth}
-        >
+        {isAdmin ? (
           <VetadosPageInner />
-        </PasswordGate>
+        ) : (
+          <PasswordGate
+            title="Administración SAPD — Ingrese la contraseña del Departamento"
+            onAuth={handleAuth}
+          >
+            <VetadosPageInner />
+          </PasswordGate>
+        )}
       </div>
     </div>
   );
