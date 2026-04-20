@@ -5,31 +5,33 @@ import PublicacionFormDialog from '@/components/PublicacionFormDialog';
 import { useAdmin } from '@/context/AdminContext';
 import { useNoticias, Publicacion } from '@/hooks/usePublicaciones';
 import { supabase } from '@/integrations/supabase/client';
+import { logAction } from '@/lib/audit';
 import { Button } from '@/components/ui/button';
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { toast } from '@/hooks/use-toast';
 import { Loader2, Plus, Trash2 } from 'lucide-react';
 
 const NoticiasPage = () => {
-  const { isAdmin } = useAdmin();
+  const { can, username, role } = useAdmin();
+  const canN = can('noticias');
   const { data: noticias = [], isLoading } = useNoticias();
   const qc = useQueryClient();
   const [formOpen, setFormOpen] = useState(false);
   const [deleting, setDeleting] = useState<Publicacion | null>(null);
 
   const del = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('noticias').delete().eq('id', id);
+    mutationFn: async (n: Publicacion) => {
+      const { error } = await supabase.from('noticias').delete().eq('id', n.id);
       if (error) throw error;
+      await logAction(
+        { username, role: role! },
+        'noticias',
+        'borrar',
+        `Eliminó noticia: "${n.titulo}"`,
+      );
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['noticias'] });
@@ -40,6 +42,15 @@ const NoticiasPage = () => {
       toast({ title: 'Error', description: e.message, variant: 'destructive' }),
   });
 
+  const guardOpen = () => {
+    if (!canN) return toast({ title: 'No tienes permisos suficientes', variant: 'destructive' });
+    setFormOpen(true);
+  };
+  const guardDel = (n: Publicacion) => {
+    if (!canN) return toast({ title: 'No tienes permisos suficientes', variant: 'destructive' });
+    setDeleting(n);
+  };
+
   return (
     <div className="min-h-screen">
       <NavBar />
@@ -49,8 +60,8 @@ const NoticiasPage = () => {
           <h1 className="text-gold text-lg font-bold tracking-[0.3em] uppercase">
             Información Pública de SAPD
           </h1>
-          {isAdmin && (
-            <Button onClick={() => setFormOpen(true)} className="gap-2">
+          {canN && (
+            <Button onClick={guardOpen} className="gap-2">
               <Plus className="w-4 h-4" />
               Crear noticia
             </Button>
@@ -76,25 +87,16 @@ const NoticiasPage = () => {
                 <p className="text-value text-sm leading-relaxed whitespace-pre-wrap mb-4">
                   {n.desarrollo}
                 </p>
-                {isAdmin && (
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => setDeleting(n)}
-                    className="gap-2"
-                  >
+                {canN && (
+                  <Button size="sm" variant="destructive" onClick={() => guardDel(n)} className="gap-2">
                     <Trash2 className="w-3 h-3" />
                     Eliminar
                   </Button>
                 )}
               </div>
               {n.imagen_url && (
-                <img
-                  src={n.imagen_url}
-                  alt={n.titulo}
-                  loading="lazy"
-                  className="w-full object-contain border-t border-border"
-                />
+                <img src={n.imagen_url} alt={n.titulo} loading="lazy"
+                     className="w-full object-contain border-t border-border" />
               )}
             </article>
           ))}
@@ -109,20 +111,19 @@ const NoticiasPage = () => {
         table="noticias"
         queryKey="noticias"
         label="Noticia"
+        area="noticias"
       />
 
       <AlertDialog open={!!deleting} onOpenChange={(o) => !o && setDeleting(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>¿Eliminar "{deleting?.titulo}"?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Esta acción no se puede deshacer.
-            </AlertDialogDescription>
+            <AlertDialogDescription>Esta acción no se puede deshacer.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => deleting && del.mutate(deleting.id)}
+              onClick={() => deleting && del.mutate(deleting)}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Eliminar

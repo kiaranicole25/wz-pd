@@ -1,5 +1,4 @@
 import type { PersonalRow } from '@/hooks/useSAPDData';
-import { useAdmin } from '@/context/AdminContext';
 import { Pencil, Trash2 } from 'lucide-react';
 
 const SIN_FOTO = () => (
@@ -10,13 +9,12 @@ const SIN_FOTO = () => (
 
 interface Props {
   officer: PersonalRow;
+  canEdit?: boolean;
   onEdit?: (o: PersonalRow) => void;
   onDelete?: (o: PersonalRow) => void;
 }
 
-const OfficerCard = ({ officer, onEdit, onDelete }: Props) => {
-  const { isAdmin } = useAdmin();
-
+const OfficerCard = ({ officer, canEdit = false, onEdit, onDelete }: Props) => {
   return (
     <div className="flex gap-5 border-b border-border py-4 relative">
       <div className="flex flex-col items-center gap-1.5 shrink-0">
@@ -52,7 +50,7 @@ const OfficerCard = ({ officer, onEdit, onDelete }: Props) => {
         </div>
       </div>
 
-      {isAdmin && (
+      {canEdit && (
         <div className="absolute top-3 right-3 flex gap-2">
           <button
             onClick={() => onEdit?.(officer)}
@@ -79,9 +77,7 @@ const Row = ({ label, value }: { label: string; value: string }) => (
     <span className="text-label font-bold tracking-wider whitespace-nowrap">
       {label}
     </span>
-
     <span className="text-muted-foreground mx-2">—</span>
-
     <span
       className={
         label === "NOMBRE"
