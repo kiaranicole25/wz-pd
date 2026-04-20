@@ -1,1 +1,4 @@
 project_id = "rurpjwamcsjhcqrkttin"
+
+[functions.cupula-auth]
+verify_jwt = false
