@@ -17,6 +17,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { useAdmin } from '@/context/AdminContext';
+import { logAction } from '@/lib/audit';
 
 const schema = z.object({
   nombre: z.string().trim().min(1, 'Requerido').max(150),
@@ -35,6 +37,7 @@ interface Props {
 
 const VetadoFormDialog = ({ open, onOpenChange, editing, nextOrden }: Props) => {
   const qc = useQueryClient();
+  const { username, role } = useAdmin();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -55,11 +58,19 @@ const VetadoFormDialog = ({ open, onOpenChange, editing, nextOrden }: Props) => 
           .update(values)
           .eq('id', editing.id);
         if (error) throw error;
+        if (role) await logAction(
+          { username, role }, 'vetados', 'editar',
+          `Editó vetado: ${values.nombre} - DiscordID: ${values.discord_id}`,
+        );
       } else {
         const { error } = await supabase
           .from('vetados')
           .insert({ ...values, orden: nextOrden });
         if (error) throw error;
+        if (role) await logAction(
+          { username, role }, 'vetados', 'crear',
+          `Creó vetado: ${values.nombre}, Razón: ${values.motivo}, DiscordID: ${values.discord_id}`,
+        );
       }
     },
     onSuccess: () => {

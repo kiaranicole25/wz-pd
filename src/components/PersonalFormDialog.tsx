@@ -18,6 +18,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
 import { Loader2, Upload } from 'lucide-react';
+import { useAdmin } from '@/context/AdminContext';
+import { logAction } from '@/lib/audit';
 
 const schema = z.object({
   nombre: z.string().trim().min(1, 'Requerido').max(100),
@@ -70,6 +72,7 @@ const emptyValues = (): FormValues => ({
 
 const PersonalFormDialog = ({ open, onOpenChange, rangos, editing }: Props) => {
   const qc = useQueryClient();
+  const { username, role } = useAdmin();
   const [uploading, setUploading] = useState(false);
 
   const form = useForm<FormValues>({
@@ -113,9 +116,17 @@ const PersonalFormDialog = ({ open, onOpenChange, rangos, editing }: Props) => {
           .update(payload)
           .eq('id', editing.id);
         if (error) throw error;
+        if (role) await logAction(
+          { username, role }, 'sapd', 'editar',
+          `Editó SAPD: ${values.nombre} (${values.expediente})`,
+        );
       } else {
         const { error } = await supabase.from('personal').insert(payload);
         if (error) throw error;
+        if (role) await logAction(
+          { username, role }, 'sapd', 'crear',
+          `Creó SAPD: ${values.nombre} - Rango ${rangos.find(r=>r.id===values.rango_id)?.label ?? ''} (${values.expediente})`,
+        );
       }
     },
     onSuccess: () => {
