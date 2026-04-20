@@ -1,5 +1,4 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0';
-import * as bcrypt from 'https://deno.land/x/bcrypt@v0.4.1/mod.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,6 +12,56 @@ const supabase = createClient(
 );
 
 const ENCARGADO_PASSWORD = 'S-nrR3@7gK?hQYQ';
+
+// Hash password using Web Crypto API (PBKDF2 con SHA-256). Funciona en Deno edge sin Worker.
+function bytesToHex(buf: ArrayBuffer): string {
+  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+function hexToBytes(hex: string): Uint8Array {
+  const out = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < out.length; i++) out[i] = parseInt(hex.substr(i * 2, 2), 16);
+  return out;
+}
+
+async function pbkdf2(password: string, salt: Uint8Array, iterations = 100_000): Promise<string> {
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(password),
+    { name: 'PBKDF2' },
+    false,
+    ['deriveBits'],
+  );
+  const bits = await crypto.subtle.deriveBits(
+    { name: 'PBKDF2', salt, iterations, hash: 'SHA-256' },
+    key,
+    256,
+  );
+  return bytesToHex(bits);
+}
+
+async function hashPassword(password: string): Promise<string> {
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iterations = 100_000;
+  const hash = await pbkdf2(password, salt, iterations);
+  return `pbkdf2$${iterations}$${bytesToHex(salt.buffer)}$${hash}`;
+}
+
+async function verifyPassword(password: string, stored: string): Promise<boolean> {
+  try {
+    const [scheme, iterStr, saltHex, hashHex] = stored.split('$');
+    if (scheme !== 'pbkdf2') return false;
+    const iterations = parseInt(iterStr, 10);
+    const salt = hexToBytes(saltHex);
+    const calc = await pbkdf2(password, salt, iterations);
+    // constant-time compare
+    if (calc.length !== hashHex.length) return false;
+    let diff = 0;
+    for (let i = 0; i < calc.length; i++) diff |= calc.charCodeAt(i) ^ hashHex.charCodeAt(i);
+    return diff === 0;
+  } catch {
+    return false;
+  }
+}
 
 async function logAudit(actor: string, role: string, area: string, action: string, detalle: string) {
   await supabase.from('audit_logs').insert({
@@ -54,7 +103,7 @@ Deno.serve(async (req) => {
         return json({ ok: false, error: 'Credenciales incorrectas' }, 401);
       }
 
-      const ok = await bcrypt.compare(password, user.password_hash);
+      const ok = await verifyPassword(password, user.password_hash);
       if (!ok) {
         await logAudit(username, 'anon', 'auth', 'login_fail',
           `${username} intentó ingresar al modo admin - nombre y pass erróneos`);
@@ -86,7 +135,7 @@ Deno.serve(async (req) => {
         return json({ ok: false, error: 'Datos demasiado largos' }, 400);
       }
 
-      const hash = await bcrypt.hash(password);
+      const hash = await hashPassword(password);
       const { error } = await supabase.from('cupula_users').insert({
         username,
         password_hash: hash,
