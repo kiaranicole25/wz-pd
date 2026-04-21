@@ -6,6 +6,7 @@ import { useAdmin } from '@/context/AdminContext';
 import { useVetados, VetadoRow } from '@/hooks/useSAPDData';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
+import { logAction } from '@/lib/audit';
 import { Loader2, Pencil, Plus } from 'lucide-react';
 
 const VETADOS_PASSWORD = 'Deptosapd2026';
@@ -105,15 +106,53 @@ const VetadosPageInner = () => {
 };
 
 const VetadosPage = () => {
-  const { isAdmin } = useAdmin();
+  const { isAdmin, role, username } = useAdmin();
+  const [cupulaConfirmed, setCupulaConfirmed] = useState(false);
   const handleAuth = (_username: string, password: string) =>
     password === VETADOS_PASSWORD;
+
+  const handleConfirmCupula = async () => {
+    setCupulaConfirmed(true);
+    if (role) {
+      await logAction(
+        { username, role },
+        'vetados',
+        'visitar',
+        `${username} visitó la lista de vetados`,
+      );
+    }
+  };
 
   return (
     <div className="min-h-screen">
       <NavBar />
       <div className="max-w-5xl mx-auto px-6 py-10">
-        {isAdmin ? (
+        {role === 'encargado' || (role === 'cupula' && cupulaConfirmed) ? (
+          <VetadosPageInner />
+        ) : role === 'cupula' ? (
+          <div className="min-h-[60vh] flex items-center justify-center px-4">
+            <div className="border-2 border-gold w-full max-w-md p-8 text-center">
+              <h2 className="text-gold font-bold text-sm tracking-[0.2em] mb-6 uppercase">
+                ¿Quieres ver los vetados?
+              </h2>
+              <p className="text-muted-foreground text-xs mb-8 tracking-wider">
+                Tu visita quedará registrada en los logs.
+              </p>
+              <div className="flex gap-3">
+                <Button onClick={handleConfirmCupula} className="flex-1">
+                  Sí
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => window.history.back()}
+                  className="flex-1"
+                >
+                  No
+                </Button>
+              </div>
+            </div>
+          </div>
+        ) : isAdmin ? (
           <VetadosPageInner />
         ) : (
           <PasswordGate

@@ -1,7 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 
 export type AuditArea = 'sapd' | 'vetados' | 'noticias' | 'importantes' | 'auth' | 'usuarios';
-export type AuditAction = 'crear' | 'editar' | 'borrar' | 'login_ok' | 'login_fail';
+export type AuditAction = 'crear' | 'editar' | 'borrar' | 'login_ok' | 'login_fail' | 'visitar';
 
 export async function logAction(
   actor: { username: string; role: 'encargado' | 'cupula' | 'anon' },

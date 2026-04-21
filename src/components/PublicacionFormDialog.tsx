@@ -21,7 +21,6 @@ import { useAdmin } from '@/context/AdminContext';
 import { logAction, AuditArea } from '@/lib/audit';
 
 const schema = z.object({
-  redactor: z.string().trim().min(1, 'Requerido').max(100),
   titulo: z.string().trim().min(1, 'Requerido').max(200),
   desarrollo: z.string().trim().min(1, 'Requerido').max(5000),
   imagen_url: z.string().url().or(z.literal('')),
@@ -52,22 +51,25 @@ const PublicacionFormDialog = ({
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { redactor: '', titulo: '', desarrollo: '', imagen_url: '' },
+    defaultValues: { titulo: '', desarrollo: '', imagen_url: '' },
   });
 
   useEffect(() => {
-    if (open) form.reset({ redactor: '', titulo: '', desarrollo: '', imagen_url: '' });
+    if (open) form.reset({ titulo: '', desarrollo: '', imagen_url: '' });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
+  const redactorName =
+    role === 'cupula' && username ? username : 'Departamento de Policias';
+
   const mutation = useMutation({
     mutationFn: async (v: FormValues) => {
-      const payload = { ...v, imagen_url: v.imagen_url || null };
+      const payload = { ...v, redactor: redactorName, imagen_url: v.imagen_url || null };
       const { error } = await supabase.from(table).insert(payload);
       if (error) throw error;
       if (role) {
         await logAction(
-          { username, role },
+          { username: redactorName, role },
           area,
           'crear',
           `Creó ${label.toLowerCase()}: "${v.titulo}"`,
@@ -130,9 +132,9 @@ const PublicacionFormDialog = ({
           )}
           className="space-y-4"
         >
-          <Field label="Redactado por" error={form.formState.errors.redactor?.message}>
-            <Input {...form.register('redactor')} placeholder="Nombre del redactor" />
-          </Field>
+          <div className="text-xs text-muted-foreground tracking-widest uppercase">
+            Redactado por: <span className="text-gold">{redactorName}</span>
+          </div>
           <Field label="Título" error={form.formState.errors.titulo?.message}>
             <Input {...form.register('titulo')} />
           </Field>
