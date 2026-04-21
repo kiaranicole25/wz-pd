@@ -132,9 +132,9 @@ const PublicacionFormDialog = ({
           )}
           className="space-y-4"
         >
-          <Field label="Redactado por" error={form.formState.errors.redactor?.message}>
-            <Input {...form.register('redactor')} placeholder="Nombre del redactor" />
-          </Field>
+          <div className="text-xs text-muted-foreground tracking-widest uppercase">
+            Redactado por: <span className="text-gold">{redactorName}</span>
+          </div>
           <Field label="Título" error={form.formState.errors.titulo?.message}>
             <Input {...form.register('titulo')} />
           </Field>
