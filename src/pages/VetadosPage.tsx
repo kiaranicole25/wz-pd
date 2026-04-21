@@ -117,7 +117,7 @@ const VetadosPage = () => {
       await logAction(
         { username, role },
         'vetados',
-        'crear',
+        'visitar',
         `${username} visitó la lista de vetados`,
       );
     }
