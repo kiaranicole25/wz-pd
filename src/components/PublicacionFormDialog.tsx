@@ -21,7 +21,6 @@ import { useAdmin } from '@/context/AdminContext';
 import { logAction, AuditArea } from '@/lib/audit';
 
 const schema = z.object({
-  redactor: z.string().trim().min(1, 'Requerido').max(100),
   titulo: z.string().trim().min(1, 'Requerido').max(200),
   desarrollo: z.string().trim().min(1, 'Requerido').max(5000),
   imagen_url: z.string().url().or(z.literal('')),
