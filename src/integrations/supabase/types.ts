@@ -290,6 +290,7 @@ export type Database = {
           created_at: string | null
           id: string | null
           perm_importantes: boolean | null
+          perm_logs: boolean | null
           perm_noticias: boolean | null
           perm_sapd: boolean | null
           perm_vetados: boolean | null
@@ -299,6 +300,7 @@ export type Database = {
           created_at?: string | null
           id?: string | null
           perm_importantes?: boolean | null
+          perm_logs?: boolean | null
           perm_noticias?: boolean | null
           perm_sapd?: boolean | null
           perm_vetados?: boolean | null
@@ -308,6 +310,7 @@ export type Database = {
           created_at?: string | null
           id?: string | null
           perm_importantes?: boolean | null
+          perm_logs?: boolean | null
           perm_noticias?: boolean | null
           perm_sapd?: boolean | null
           perm_vetados?: boolean | null
