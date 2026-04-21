@@ -6,6 +6,7 @@ import { useAdmin } from '@/context/AdminContext';
 import { useVetados, VetadoRow } from '@/hooks/useSAPDData';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
+import { logAction } from '@/lib/audit';
 import { Loader2, Pencil, Plus } from 'lucide-react';
 
 const VETADOS_PASSWORD = 'Deptosapd2026';
