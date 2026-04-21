@@ -80,6 +80,7 @@ export type Database = {
           id: string
           password_hash: string
           perm_importantes: boolean
+          perm_logs: boolean
           perm_noticias: boolean
           perm_sapd: boolean
           perm_vetados: boolean
@@ -91,6 +92,7 @@ export type Database = {
           id?: string
           password_hash: string
           perm_importantes?: boolean
+          perm_logs?: boolean
           perm_noticias?: boolean
           perm_sapd?: boolean
           perm_vetados?: boolean
@@ -102,6 +104,7 @@ export type Database = {
           id?: string
           password_hash?: string
           perm_importantes?: boolean
+          perm_logs?: boolean
           perm_noticias?: boolean
           perm_sapd?: boolean
           perm_vetados?: boolean
@@ -189,6 +192,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      profugos: {
+        Row: {
+          created_at: string
+          delitos: string[]
+          id: string
+          imagen_url: string | null
+          localidad: string
+          nombre: string
+          numero_procesamiento: string
+          orden: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          delitos?: string[]
+          id?: string
+          imagen_url?: string | null
+          localidad?: string
+          nombre: string
+          numero_procesamiento: string
+          orden?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          delitos?: string[]
+          id?: string
+          imagen_url?: string | null
+          localidad?: string
+          nombre?: string
+          numero_procesamiento?: string
+          orden?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
       rangos: {
         Row: {
