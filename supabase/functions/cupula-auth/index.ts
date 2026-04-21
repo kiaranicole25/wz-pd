@@ -120,6 +120,8 @@ Deno.serve(async (req) => {
           vetados: user.perm_vetados,
           noticias: user.perm_noticias,
           importantes: user.perm_importantes,
+          profugos: user.perm_profugos ?? false,
+          logs: user.perm_logs ?? false,
         },
       });
     }
@@ -143,11 +145,34 @@ Deno.serve(async (req) => {
         perm_vetados: !!permissions?.vetados,
         perm_noticias: !!permissions?.noticias,
         perm_importantes: !!permissions?.importantes,
+        perm_profugos: !!permissions?.profugos,
+        perm_logs: !!permissions?.logs,
       });
       if (error) return json({ ok: false, error: error.message }, 400);
 
       await logAudit(actor || 'Superusuario Administrador', 'encargado', 'usuarios', 'crear',
         `Creó usuario Cúpula: ${username}`);
+      return json({ ok: true });
+    }
+
+    // ---------- ACTUALIZAR PERMISOS CUPULA (solo encargado) ----------
+    if (op === 'update_permissions') {
+      const { encargado_password, user_id, permissions, actor } = body;
+      if (encargado_password !== ENCARGADO_PASSWORD) {
+        return json({ ok: false, error: 'No autorizado' }, 403);
+      }
+      const { data: u } = await supabase.from('cupula_users').select('username').eq('id', user_id).maybeSingle();
+      const { error } = await supabase.from('cupula_users').update({
+        perm_sapd: !!permissions?.sapd,
+        perm_vetados: !!permissions?.vetados,
+        perm_noticias: !!permissions?.noticias,
+        perm_importantes: !!permissions?.importantes,
+        perm_profugos: !!permissions?.profugos,
+        perm_logs: !!permissions?.logs,
+      }).eq('id', user_id);
+      if (error) return json({ ok: false, error: error.message }, 400);
+      await logAudit(actor || 'Superusuario Administrador', 'encargado', 'usuarios', 'editar',
+        `Editó permisos de Cúpula: ${u?.username ?? user_id}`);
       return json({ ok: true });
     }
 

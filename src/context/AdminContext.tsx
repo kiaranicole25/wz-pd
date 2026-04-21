@@ -5,13 +5,15 @@ const STORAGE_KEY = 'sapd_admin_session_v2';
 const ENCARGADO_PASSWORD = 'S-nrR3@7gK?hQYQ';
 
 export type AdminRole = 'encargado' | 'cupula' | null;
-export type PermArea = 'sapd' | 'vetados' | 'noticias' | 'importantes';
+export type PermArea = 'sapd' | 'vetados' | 'noticias' | 'importantes' | 'profugos' | 'logs';
 
 export interface Permissions {
   sapd: boolean;
   vetados: boolean;
   noticias: boolean;
   importantes: boolean;
+  profugos: boolean;
+  logs: boolean;
 }
 
 interface Session {
@@ -29,8 +31,8 @@ interface AdminContextValue extends Session {
   encargadoPassword: string | null; // se guarda solo en memoria de sesión para crear/borrar usuarios
 }
 
-const ALL_PERMS: Permissions = { sapd: true, vetados: true, noticias: true, importantes: true };
-const NO_PERMS: Permissions = { sapd: false, vetados: false, noticias: false, importantes: false };
+const ALL_PERMS: Permissions = { sapd: true, vetados: true, noticias: true, importantes: true, profugos: true, logs: true };
+const NO_PERMS: Permissions = { sapd: false, vetados: false, noticias: false, importantes: false, profugos: false, logs: false };
 
 const AdminContext = createContext<AdminContextValue | null>(null);
 

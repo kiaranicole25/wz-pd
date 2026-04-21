@@ -9,17 +9,18 @@ const LOGO_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Seal
 const baseTabs = [
   { path: '/sapd', label: 'Departamento' },
   { path: '/vetados', label: 'Vetados' },
+  { path: '/profugos', label: 'Prófugos' },
   { path: '/noticias', label: 'Información' },
   { path: '/importante', label: 'Importante' },
 ];
 
 const NavBar = () => {
   const location = useLocation();
-  const { isAdmin, role, username, logout } = useAdmin();
+  const { isAdmin, role, username, logout, can } = useAdmin();
   const [loginOpen, setLoginOpen] = useState(false);
 
-  // Solo el Encargado ve la pestaña Logs
-  const tabs = role === 'encargado' ? [...baseTabs, { path: '/logs', label: 'Logs' }] : baseTabs;
+  // Encargado o Cúpula con permiso 'logs' ven la pestaña Logs
+  const tabs = can('logs') ? [...baseTabs, { path: '/logs', label: 'Logs' }] : baseTabs;
 
   const handleLogoClick = (e: React.MouseEvent) => {
     if (!isAdmin) {
