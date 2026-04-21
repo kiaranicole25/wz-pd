@@ -82,6 +82,7 @@ export type Database = {
           perm_importantes: boolean
           perm_logs: boolean
           perm_noticias: boolean
+          perm_profugos: boolean
           perm_sapd: boolean
           perm_vetados: boolean
           updated_at: string
@@ -94,6 +95,7 @@ export type Database = {
           perm_importantes?: boolean
           perm_logs?: boolean
           perm_noticias?: boolean
+          perm_profugos?: boolean
           perm_sapd?: boolean
           perm_vetados?: boolean
           updated_at?: string
@@ -106,6 +108,7 @@ export type Database = {
           perm_importantes?: boolean
           perm_logs?: boolean
           perm_noticias?: boolean
+          perm_profugos?: boolean
           perm_sapd?: boolean
           perm_vetados?: boolean
           updated_at?: string
@@ -292,6 +295,7 @@ export type Database = {
           perm_importantes: boolean | null
           perm_logs: boolean | null
           perm_noticias: boolean | null
+          perm_profugos: boolean | null
           perm_sapd: boolean | null
           perm_vetados: boolean | null
           username: string | null
@@ -302,6 +306,7 @@ export type Database = {
           perm_importantes?: boolean | null
           perm_logs?: boolean | null
           perm_noticias?: boolean | null
+          perm_profugos?: boolean | null
           perm_sapd?: boolean | null
           perm_vetados?: boolean | null
           username?: string | null
@@ -312,6 +317,7 @@ export type Database = {
           perm_importantes?: boolean | null
           perm_logs?: boolean | null
           perm_noticias?: boolean | null
+          perm_profugos?: boolean | null
           perm_sapd?: boolean | null
           perm_vetados?: boolean | null
           username?: string | null
