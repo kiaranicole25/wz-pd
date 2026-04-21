@@ -51,22 +51,25 @@ const PublicacionFormDialog = ({
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { redactor: '', titulo: '', desarrollo: '', imagen_url: '' },
+    defaultValues: { titulo: '', desarrollo: '', imagen_url: '' },
   });
 
   useEffect(() => {
-    if (open) form.reset({ redactor: '', titulo: '', desarrollo: '', imagen_url: '' });
+    if (open) form.reset({ titulo: '', desarrollo: '', imagen_url: '' });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
+  const redactorName =
+    role === 'cupula' && username ? username : 'Departamento de Policias';
+
   const mutation = useMutation({
     mutationFn: async (v: FormValues) => {
-      const payload = { ...v, imagen_url: v.imagen_url || null };
+      const payload = { ...v, redactor: redactorName, imagen_url: v.imagen_url || null };
       const { error } = await supabase.from(table).insert(payload);
       if (error) throw error;
       if (role) {
         await logAction(
-          { username, role },
+          { username: redactorName, role },
           area,
           'crear',
           `Creó ${label.toLowerCase()}: "${v.titulo}"`,
