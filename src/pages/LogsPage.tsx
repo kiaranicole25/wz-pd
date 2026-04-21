@@ -16,7 +16,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { toast } from '@/hooks/use-toast';
-import { Loader2, Plus, Trash2, ScrollText, Users } from 'lucide-react';
+import { Loader2, Plus, Trash2, ScrollText, Users, Pencil } from 'lucide-react';
 
 interface AuditLog {
   id: string;
@@ -35,8 +35,25 @@ interface CupulaUser {
   perm_vetados: boolean;
   perm_noticias: boolean;
   perm_importantes: boolean;
+  perm_profugos: boolean;
+  perm_logs: boolean;
   created_at: string;
 }
+
+type Perms = {
+  sapd: boolean; vetados: boolean; noticias: boolean;
+  importantes: boolean; profugos: boolean; logs: boolean;
+};
+const EMPTY_PERMS: Perms = { sapd: false, vetados: false, noticias: false, importantes: false, profugos: false, logs: false };
+
+const PERM_OPTIONS: ReadonlyArray<readonly [keyof Perms, string]> = [
+  ['sapd', 'Editar / Crear / Borrar SAPD'],
+  ['vetados', 'Editar Vetados'],
+  ['profugos', 'Editar / Crear / Borrar Prófugos'],
+  ['noticias', 'Crear / Editar / Borrar Información'],
+  ['importantes', 'Editar / Crear / Borrar Importantes'],
+  ['logs', 'Ver registros de actividad (/logs)'],
+];
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleString('es-ES', {
@@ -47,7 +64,8 @@ const formatDate = (iso: string) =>
 const areaLabel = (a: string) => {
   const map: Record<string, string> = {
     sapd: '/sapd', vetados: '/vetados', noticias: '/noticias',
-    importantes: '/importante', auth: 'auth', usuarios: 'usuarios',
+    importantes: '/importante', profugos: '/profugos',
+    auth: 'auth', usuarios: 'usuarios',
   };
   return map[a] ?? a;
 };
@@ -62,16 +80,22 @@ const actionColor = (a: string) => {
 };
 
 const LogsPage = () => {
-  const { role, encargadoPassword, username } = useAdmin();
+  const { role, encargadoPassword, username, can } = useAdmin();
   const qc = useQueryClient();
+  const isEncargado = role === 'encargado';
+  const canViewLogs = can('logs');
+
   const [createOpen, setCreateOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<CupulaUser | null>(null);
   const [delUser, setDelUser] = useState<CupulaUser | null>(null);
 
-  // Form state
   const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [perms, setPerms] = useState({ sapd: false, vetados: false, noticias: false, importantes: false });
+  const [perms, setPerms] = useState<Perms>(EMPTY_PERMS);
   const [creating, setCreating] = useState(false);
+
+  const [editPerms, setEditPerms] = useState<Perms>(EMPTY_PERMS);
+  const [savingEdit, setSavingEdit] = useState(false);
 
   const { data: logs = [], isLoading: loadingLogs } = useQuery({
     queryKey: ['audit_logs'],
@@ -84,7 +108,7 @@ const LogsPage = () => {
       if (error) throw error;
       return data as AuditLog[];
     },
-    enabled: role === 'encargado',
+    enabled: canViewLogs,
   });
 
   const { data: users = [] } = useQuery({
@@ -97,18 +121,13 @@ const LogsPage = () => {
       if (error) throw error;
       return data as CupulaUser[];
     },
-    enabled: role === 'encargado',
+    enabled: isEncargado,
   });
 
   const deleteUser = useMutation({
     mutationFn: async (u: CupulaUser) => {
       const { data, error } = await supabase.functions.invoke('cupula-auth', {
-        body: {
-          op: 'delete_user',
-          encargado_password: encargadoPassword,
-          user_id: u.id,
-          actor: username,
-        },
+        body: { op: 'delete_user', encargado_password: encargadoPassword, user_id: u.id, actor: username },
       });
       if (error || !data?.ok) throw new Error(data?.error || 'Error');
     },
@@ -121,7 +140,7 @@ const LogsPage = () => {
     onError: (e: Error) => toast({ title: 'Error', description: e.message, variant: 'destructive' }),
   });
 
-  if (role !== 'encargado') return <Navigate to="/" replace />;
+  if (!canViewLogs) return <Navigate to="/" replace />;
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,12 +151,9 @@ const LogsPage = () => {
     setCreating(true);
     const { data, error } = await supabase.functions.invoke('cupula-auth', {
       body: {
-        op: 'create_user',
-        encargado_password: encargadoPassword,
-        username: newUsername.trim(),
-        password: newPassword,
-        permissions: perms,
-        actor: username,
+        op: 'create_user', encargado_password: encargadoPassword,
+        username: newUsername.trim(), password: newPassword,
+        permissions: perms, actor: username,
       },
     });
     setCreating(false);
@@ -146,9 +162,38 @@ const LogsPage = () => {
       return;
     }
     toast({ title: 'Usuario creado' });
-    setNewUsername(''); setNewPassword('');
-    setPerms({ sapd: false, vetados: false, noticias: false, importantes: false });
+    setNewUsername(''); setNewPassword(''); setPerms(EMPTY_PERMS);
     setCreateOpen(false);
+    qc.invalidateQueries({ queryKey: ['cupula_users_public'] });
+    qc.invalidateQueries({ queryKey: ['audit_logs'] });
+  };
+
+  const openEdit = (u: CupulaUser) => {
+    setEditingUser(u);
+    setEditPerms({
+      sapd: u.perm_sapd, vetados: u.perm_vetados,
+      noticias: u.perm_noticias, importantes: u.perm_importantes,
+      profugos: u.perm_profugos, logs: u.perm_logs,
+    });
+  };
+
+  const handleSaveEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingUser) return;
+    setSavingEdit(true);
+    const { data, error } = await supabase.functions.invoke('cupula-auth', {
+      body: {
+        op: 'update_permissions', encargado_password: encargadoPassword,
+        user_id: editingUser.id, permissions: editPerms, actor: username,
+      },
+    });
+    setSavingEdit(false);
+    if (error || !data?.ok) {
+      toast({ title: 'Error', description: data?.error || 'No se pudo guardar', variant: 'destructive' });
+      return;
+    }
+    toast({ title: 'Permisos actualizados' });
+    setEditingUser(null);
     qc.invalidateQueries({ queryKey: ['cupula_users_public'] });
     qc.invalidateQueries({ queryKey: ['audit_logs'] });
   };
@@ -158,65 +203,72 @@ const LogsPage = () => {
       <NavBar />
       <main className="max-w-5xl mx-auto px-4 py-10">
         <div className="bg-accent-bar w-full h-[2px] mb-8" />
-        <h1 className="text-gold text-3xl font-bold tracking-[0.3em] uppercase text-center mb-2">
-          Logs
-        </h1>
+        <h1 className="text-gold text-3xl font-bold tracking-[0.3em] uppercase text-center mb-2">Logs</h1>
         <p className="text-muted-foreground text-xs tracking-[0.3em] uppercase text-center mb-10">
-          Registro de actividad — Solo Encargado
+          Registro de actividad {isEncargado ? '— Encargado' : '— Cúpula (solo lectura)'}
         </p>
 
-        {/* USUARIOS CÚPULA */}
-        <section className="mb-12">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-gold text-sm font-bold tracking-widest uppercase flex items-center gap-2">
-              <Users className="w-4 h-4" /> Usuarios Cúpula
-            </h2>
-            <Button onClick={() => setCreateOpen(true)} className="gap-2">
-              <Plus className="w-4 h-4" /> Crear Usuario Personalizado
-            </Button>
-          </div>
+        {/* USUARIOS CÚPULA — solo Encargado */}
+        {isEncargado && (
+          <section className="mb-12">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-gold text-sm font-bold tracking-widest uppercase flex items-center gap-2">
+                <Users className="w-4 h-4" /> Usuarios Cúpula
+              </h2>
+              <Button onClick={() => setCreateOpen(true)} className="gap-2">
+                <Plus className="w-4 h-4" /> Crear Usuario Personalizado
+              </Button>
+            </div>
 
-          <div className="border border-border">
-            {users.length === 0 ? (
-              <p className="text-muted-foreground text-xs tracking-wider uppercase text-center py-6">
-                Sin usuarios creados
-              </p>
-            ) : (
-              <table className="w-full text-sm">
-                <thead className="bg-header">
-                  <tr>
-                    <th className="text-left text-xs text-gold font-bold tracking-widest uppercase px-4 py-2">Usuario</th>
-                    <th className="text-center text-xs text-gold font-bold tracking-widest uppercase px-2 py-2">SAPD</th>
-                    <th className="text-center text-xs text-gold font-bold tracking-widest uppercase px-2 py-2">Vetados</th>
-                    <th className="text-center text-xs text-gold font-bold tracking-widest uppercase px-2 py-2">Información</th>
-                    <th className="text-center text-xs text-gold font-bold tracking-widest uppercase px-2 py-2">Importantes</th>
-                    <th className="px-2 py-2" />
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((u, i) => (
-                    <tr key={u.id} className={i % 2 === 0 ? 'bg-row-even' : 'bg-row-odd'}>
-                      <td className="px-4 py-2 font-mono">{u.username}</td>
-                      <td className="text-center">{u.perm_sapd ? '✓' : '—'}</td>
-                      <td className="text-center">{u.perm_vetados ? '✓' : '—'}</td>
-                      <td className="text-center">{u.perm_noticias ? '✓' : '—'}</td>
-                      <td className="text-center">{u.perm_importantes ? '✓' : '—'}</td>
-                      <td className="px-2 py-2">
-                        <button
-                          onClick={() => setDelUser(u)}
-                          className="p-1.5 text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors"
-                          title="Eliminar usuario"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </td>
+            <div className="border border-border overflow-x-auto">
+              {users.length === 0 ? (
+                <p className="text-muted-foreground text-xs tracking-wider uppercase text-center py-6">
+                  Sin usuarios creados
+                </p>
+              ) : (
+                <table className="w-full text-sm">
+                  <thead className="bg-header">
+                    <tr>
+                      <th className="text-left text-xs text-gold font-bold tracking-widest uppercase px-4 py-2">Usuario</th>
+                      <th className="text-center text-xs text-gold font-bold tracking-widest uppercase px-2 py-2">SAPD</th>
+                      <th className="text-center text-xs text-gold font-bold tracking-widest uppercase px-2 py-2">Vet</th>
+                      <th className="text-center text-xs text-gold font-bold tracking-widest uppercase px-2 py-2">Próf</th>
+                      <th className="text-center text-xs text-gold font-bold tracking-widest uppercase px-2 py-2">Info</th>
+                      <th className="text-center text-xs text-gold font-bold tracking-widest uppercase px-2 py-2">Imp</th>
+                      <th className="text-center text-xs text-gold font-bold tracking-widest uppercase px-2 py-2">Logs</th>
+                      <th className="px-2 py-2" />
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        </section>
+                  </thead>
+                  <tbody>
+                    {users.map((u, i) => (
+                      <tr key={u.id} className={i % 2 === 0 ? 'bg-row-even' : 'bg-row-odd'}>
+                        <td className="px-4 py-2 font-mono">{u.username}</td>
+                        <td className="text-center">{u.perm_sapd ? '✓' : '—'}</td>
+                        <td className="text-center">{u.perm_vetados ? '✓' : '—'}</td>
+                        <td className="text-center">{u.perm_profugos ? '✓' : '—'}</td>
+                        <td className="text-center">{u.perm_noticias ? '✓' : '—'}</td>
+                        <td className="text-center">{u.perm_importantes ? '✓' : '—'}</td>
+                        <td className="text-center">{u.perm_logs ? '✓' : '—'}</td>
+                        <td className="px-2 py-2 flex gap-1 justify-end">
+                          <button onClick={() => openEdit(u)}
+                            className="p-1.5 text-blue-400 hover:bg-blue-400 hover:text-background transition-colors"
+                            title="Editar permisos">
+                            <Pencil className="w-4 h-4" />
+                          </button>
+                          <button onClick={() => setDelUser(u)}
+                            className="p-1.5 text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors"
+                            title="Eliminar usuario">
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* LOGS */}
         <section>
@@ -232,26 +284,20 @@ const LogsPage = () => {
 
           {!loadingLogs && logs.length === 0 && (
             <div className="border border-border p-10 text-center">
-              <p className="text-muted-foreground text-xs tracking-wider uppercase">
-                Sin registros disponibles
-              </p>
+              <p className="text-muted-foreground text-xs tracking-wider uppercase">Sin registros disponibles</p>
             </div>
           )}
 
           <div className="border border-border divide-y divide-border">
             {logs.map((l) => (
               <div key={l.id} className="px-4 py-3 grid grid-cols-[140px_1fr] gap-4 text-sm hover:bg-row-even/50">
-                <span className="text-muted-foreground text-xs font-mono">
-                  {formatDate(l.created_at)}
-                </span>
+                <span className="text-muted-foreground text-xs font-mono">{formatDate(l.created_at)}</span>
                 <div className="flex flex-wrap items-baseline gap-x-2">
                   <span className="text-gold font-bold">{l.actor_username}</span>
                   <span className={`text-xs uppercase tracking-wider ${actionColor(l.action)}`}>
                     {l.action.replace('_', ' ')}
                   </span>
-                  <span className="text-xs text-muted-foreground font-mono">
-                    {areaLabel(l.area)}
-                  </span>
+                  <span className="text-xs text-muted-foreground font-mono">{areaLabel(l.area)}</span>
                   <span className="text-value text-sm w-full">— {l.detalle}</span>
                 </div>
               </div>
@@ -268,9 +314,7 @@ const LogsPage = () => {
       <Dialog open={createOpen} onOpenChange={setCreateOpen}>
         <DialogContent className="border-2 border-gold">
           <DialogHeader>
-            <DialogTitle className="text-gold tracking-[0.2em] uppercase text-sm">
-              Crear Usuario Personalizado
-            </DialogTitle>
+            <DialogTitle className="text-gold tracking-[0.2em] uppercase text-sm">Crear Usuario Personalizado</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleCreate} className="space-y-4">
             <div className="space-y-2">
@@ -283,28 +327,44 @@ const LogsPage = () => {
             </div>
             <div className="space-y-3">
               <Label className="text-xs tracking-widest uppercase text-muted-foreground">Permisos</Label>
-              {([
-                ['sapd', 'Editar / Crear / Borrar SAPD'],
-                ['vetados', 'Editar Vetados'],
-                ['noticias', 'Crear / Editar / Borrar Información'],
-                ['importantes', 'Editar / Crear / Borrar Importantes'],
-              ] as const).map(([key, label]) => (
+              {PERM_OPTIONS.map(([key, label]) => (
                 <label key={key} className="flex items-center gap-3 cursor-pointer">
-                  <Checkbox
-                    checked={perms[key]}
-                    onCheckedChange={(v) => setPerms((p) => ({ ...p, [key]: !!v }))}
-                  />
+                  <Checkbox checked={perms[key]} onCheckedChange={(v) => setPerms((p) => ({ ...p, [key]: !!v }))} />
                   <span className="text-sm">{label}</span>
                 </label>
               ))}
             </div>
             <DialogFooter>
-              <Button type="button" variant="ghost" onClick={() => setCreateOpen(false)}>
-                Cancelar
-              </Button>
+              <Button type="button" variant="ghost" onClick={() => setCreateOpen(false)}>Cancelar</Button>
               <Button type="submit" disabled={creating}>
                 {creating && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
                 Crear
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* EDITAR PERMISOS */}
+      <Dialog open={!!editingUser} onOpenChange={(o) => !o && setEditingUser(null)}>
+        <DialogContent className="border-2 border-gold">
+          <DialogHeader>
+            <DialogTitle className="text-gold tracking-[0.2em] uppercase text-sm">
+              Editar permisos de {editingUser?.username}
+            </DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSaveEdit} className="space-y-3">
+            {PERM_OPTIONS.map(([key, label]) => (
+              <label key={key} className="flex items-center gap-3 cursor-pointer">
+                <Checkbox checked={editPerms[key]} onCheckedChange={(v) => setEditPerms((p) => ({ ...p, [key]: !!v }))} />
+                <span className="text-sm">{label}</span>
+              </label>
+            ))}
+            <DialogFooter>
+              <Button type="button" variant="ghost" onClick={() => setEditingUser(null)}>Cancelar</Button>
+              <Button type="submit" disabled={savingEdit}>
+                {savingEdit && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
+                Guardar
               </Button>
             </DialogFooter>
           </form>
